@@ -1,0 +1,6 @@
+{
+    "recommendations": [
+        "oracle.oracle-sql-developer",      // Official Oracle SQL Developer extension
+        "redhat.vscode-xml"                 // To help read project-config.xml cleanly
+    ]
+}

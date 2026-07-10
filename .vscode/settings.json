@@ -1,0 +1,29 @@
+{
+	"files.encoding": "utf8",
+	"files.eol": "\n",                     
+	"editor.formatOnSave": true,
+	"oracle-sql.connectionConfigurations": [
+		{
+			"name": "dev",
+			"description": "Development environment",
+			"connectionType": "Basic",
+			"host": "pngodb.src.si",
+			"port": 1521,
+			"serviceName": "PNGORDN",
+			"user": "system",
+			"authenticationType": "DEFAULT",
+			"savePassword": true
+		},
+		{
+			"name": "prod",
+			"description": "Production Environment",
+			"connectionType": "Basic",
+			"host": "ora26ai.src.si",
+			"port": 1521,
+			"serviceName": "orclpdb",
+			"user": "system",
+			"authenticationType": "DEFAULT",
+			"savePassword": true
+		}
+	]
+}
