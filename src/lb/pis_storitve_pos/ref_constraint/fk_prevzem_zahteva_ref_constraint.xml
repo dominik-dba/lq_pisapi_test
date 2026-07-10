@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+ xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
+ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+ <changeSet id="800c15728a0a62e37d1be81fec7980f2aed95015" author="(PIS_STORITVE_POS)-Generated" failOnError="true"    runOnChange="false"  runAlways="false"  runInTransaction="false"  >
+  <n0:createOracleRefConstraint objectName="FK_PREVZEM_ZAHTEVA" objectType="REF_CONSTRAINT" ownerName="PIS_STORITVE_POS"  replaceIfExists="false" >
+    <n0:source><![CDATA[ALTER TABLE "%USER_NAME%"."PREVZEM" ADD CONSTRAINT "FK_PREVZEM_ZAHTEVA" FOREIGN KEY ("ZAHTEVA_ID")
+	  REFERENCES "%USER_NAME%"."ZAHTEVA" ("ID") ON DELETE CASCADE ENABLE;]]></n0:source>
+      </n0:createOracleRefConstraint>
+ </changeSet>
+</databaseChangeLog>

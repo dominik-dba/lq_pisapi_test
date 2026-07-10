@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog 
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xmlns:n0="http://www.oracle.com/xml/ns/dbchangelog-ext" 
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+  <include file="sequence/callback_posiljanje_seq_sequence.xml"/> 
+  <include file="sequence/napaka_odgovora_seq_sequence.xml"/> 
+  <include file="sequence/odgovor_seq_sequence.xml"/> 
+  <include file="sequence/pravica_seq_sequence.xml"/> 
+  <include file="sequence/prevzem_seq_sequence.xml"/> 
+  <include file="sequence/priponka_seq_sequence.xml"/> 
+  <include file="sequence/task_seq_sequence.xml"/> 
+  <include file="sequence/zahteva_seq_sequence.xml"/> 
+  <include file="table/callback_posiljanje_table.xml"/> 
+  <include file="table/napaka_odgovora_table.xml"/> 
+  <include file="table/odgovor_table.xml"/> 
+  <include file="table/pravica_table.xml"/> 
+  <include file="table/prevzem_table.xml"/> 
+  <include file="table/priponka_table.xml"/> 
+  <include file="table/task_table.xml"/> 
+  <include file="table/tmp_test6_table.xml"/> 
+  <include file="table/zahteva_table.xml"/> 
+  <include file="ref_constraint/fk_callback_pos_odgovor_ref_constraint.xml"/> 
+  <include file="ref_constraint/fk_callback_pos_zahteva_ref_constraint.xml"/> 
+  <include file="ref_constraint/fk_odgovor_zahteva_ref_constraint.xml"/> 
+  <include file="ref_constraint/fk_prevzem_odgovor_ref_constraint.xml"/> 
+  <include file="ref_constraint/fk_prevzem_zahteva_ref_constraint.xml"/> 
+  <include file="ref_constraint/fk_priponka_zahteva_ref_constraint.xml"/> 
+  <include file="index/idx_callback_pos_zahteva_index.xml"/> 
+  <include file="index/idx_odgovor_publicid_index.xml"/> 
+  <include file="index/idx_odgovor_zahteva_index.xml"/> 
+  <include file="index/idx_prevzem_zahteva_index.xml"/> 
+  <include file="index/idx_priponka_zahteva_index.xml"/> 
+  <include file="index/task_uq_index.xml"/> 
+  <include file="index/uk_odgovor_message_vir_index.xml"/> 
+</databaseChangeLog> 

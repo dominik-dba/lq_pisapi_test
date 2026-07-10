@@ -1,0 +1,317 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="DominikLebar (generated)" id="1783686834309-1">
+        <createTable tableName="ZAHTEVA">
+            <column name="ID" type="NUMBER(19, 0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ZAHTEVA"/>
+            </column>
+            <column name="TIP_ZAHTEVE" type="VARCHAR2(100 CHAR)"/>
+            <column name="NASLOVNIK" type="VARCHAR2(100 CHAR)"/>
+            <column name="PUBLIC_ID" type="VARCHAR2(36 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MNENJE_ID" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="APLIKACIJA" type="VARCHAR2(10 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ORGANIZACIJA_ID" type="VARCHAR2(100 CHAR)"/>
+            <column name="INSTITUCIJA" type="VARCHAR2(255 CHAR)"/>
+            <column name="MATICNA_STEVILKA" type="VARCHAR2(20 CHAR)"/>
+            <column name="DATA" type="CLOB"/>
+            <column name="STRUKTURA_GRADIVA_ID" type="NUMBER(19, 0)"/>
+            <column name="ZIP_ID" type="VARCHAR2(128 CHAR)"/>
+            <column name="STATUS" type="VARCHAR2(40 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATUM_CRE" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATUM_MOD" type="TIMESTAMP(6)"/>
+            <column name="CALLBACK_URL" type="VARCHAR2(255 CHAR)"/>
+            <column defaultValueNumeric="0" name="VERSION" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS_INFO" type="VARCHAR2(4000 CHAR)"/>
+            <column name="TIP_STORITVE" type="VARCHAR2(255 CHAR)"/>
+            <column name="PRISTOJNOST" type="VARCHAR2(255 CHAR)"/>
+            <column name="VRSTA_MNENJA" type="VARCHAR2(255 CHAR)"/>
+            <column name="MATICNA_STEVILKA_RECIPIENTA" type="VARCHAR2(20 CHAR)"/>
+            <column name="ORGANIZACIJA_KODA" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-2">
+        <createSequence cacheSize="20" cycle="false" incrementBy="1" maxValue="9999999999999999999999999999" minValue="1" ordered="false" sequenceName="ZAHTEVA_SEQ" startValue="5641"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-3">
+        <createTable tableName="PRIPONKA">
+            <column name="ID" type="NUMBER(19, 0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRIPONKA"/>
+            </column>
+            <column name="ZAHTEVA_ID" type="NUMBER(19, 0)"/>
+            <column name="ELEMENT_ID" type="NUMBER(19, 0)"/>
+            <column name="ELEMENT_SIFRA" type="VARCHAR2(255 CHAR)"/>
+            <column name="CEH_REF" type="VARCHAR2(255 CHAR)"/>
+            <column name="FILENAME" type="VARCHAR2(255 CHAR)"/>
+            <column name="IS_VLOGA" type="NUMBER(1, 0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-4">
+        <createSequence cacheSize="20" cycle="false" incrementBy="1" maxValue="9999999999999999999999999999" minValue="1" ordered="false" sequenceName="PRIPONKA_SEQ" startValue="9201"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-5">
+        <createTable tableName="PREVZEM">
+            <column name="ID" type="NUMBER(19, 0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PREVZEM"/>
+            </column>
+            <column name="VERSION" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ZAHTEVA_ID" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PREVZEM_OBDELAN" type="NUMBER(1, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATUM_OBVESTILA" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATUM_CRE" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATUM_MOD" type="TIMESTAMP(6)"/>
+            <column name="ODGOVOR_ID" type="NUMBER(19, 0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-6">
+        <createSequence cacheSize="20" cycle="false" incrementBy="1" maxValue="9999999999999999999999999999" minValue="1" ordered="false" sequenceName="PREVZEM_SEQ" startValue="761"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-7">
+        <createTable tableName="CALLBACK_POSILJANJE">
+            <column name="ID" type="NUMBER(19, 0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CALLBACK_POSILJANJE"/>
+            </column>
+            <column defaultValueNumeric="0" name="VERSION" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ZAHTEVA_ID" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS" type="VARCHAR2(40 CHAR)"/>
+            <column name="CALLBACK_DATA" type="CLOB"/>
+            <column name="CALLBACK_FILES" type="CLOB"/>
+            <column name="CALLBACK_RESPONSE" type="CLOB"/>
+            <column name="CALLBACK_SENT" type="NUMBER(1, 0)"/>
+            <column name="CALLBACK_NEXT_ATTEMPT" type="TIMESTAMP(6)"/>
+            <column name="DATUM_CRE" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATUM_MOD" type="TIMESTAMP(6)"/>
+            <column name="ODGOVOR_ID" type="NUMBER(19, 0)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-8">
+        <createSequence cacheSize="20" cycle="false" incrementBy="1" maxValue="9999999999999999999999999999" minValue="1" ordered="false" sequenceName="CALLBACK_POSILJANJE_SEQ" startValue="2661"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-9">
+        <createSequence cacheSize="20" cycle="false" incrementBy="1" maxValue="9999999999999999999999999999" minValue="1" ordered="false" sequenceName="ODGOVOR_SEQ" startValue="921"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-10">
+        <createTable tableName="TASK">
+            <column defaultValueComputed="&quot;PIS_STORITVE_POS&quot;.&quot;TASK_SEQ&quot;.&quot;NEXTVAL&quot;" name="TASK_ID" type="NUMBER(18, 0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TASK"/>
+            </column>
+            <column name="STATUS" type="VARCHAR2(100 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REPEAT_COUNT" type="NUMBER(18, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONTEXT" type="VARCHAR2(100 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONTEXT_ID" type="VARCHAR2(100 CHAR)"/>
+            <column name="NEXT_RUN_TIME" type="TIMESTAMP(6)"/>
+            <column name="LOCK_TIME" type="TIMESTAMP(6)"/>
+            <column name="DATA" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="QUEUE" type="VARCHAR2(100 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UNIQUE_FLAG" type="NUMBER(1, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FORCE_PROCESSING" type="NUMBER(1, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ERROR" type="CLOB"/>
+            <column name="CREATED" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="UPDATED" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-11">
+        <createSequence cacheSize="0" cycle="false" incrementBy="1" maxValue="9999999999999999999999999999" minValue="1" ordered="false" sequenceName="TASK_SEQ" startValue="480"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-12">
+        <createSequence cacheSize="20" cycle="false" incrementBy="1" maxValue="9999999999999999999999999999" minValue="1" ordered="false" sequenceName="NAPAKA_ODGOVORA_SEQ" startValue="301"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-13">
+        <createSequence cacheSize="20" cycle="false" incrementBy="1" maxValue="9999999999999999999999999999" minValue="1" ordered="false" sequenceName="PRAVICA_SEQ" startValue="3121"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-14">
+        <createTable tableName="NAPAKA_ODGOVORA">
+            <column name="ID" type="NUMBER(19, 0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_NAPAKA"/>
+            </column>
+            <column defaultValueNumeric="0" name="VERSION" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ODGOVOR_ID" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SOURCE" type="VARCHAR2(20 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ERROR_CODE" type="VARCHAR2(100 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="OPIS" type="VARCHAR2(2000 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATUM_NAPAKE" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS" type="VARCHAR2(30 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATUM_CRE" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATUM_MOD" type="TIMESTAMP(6)"/>
+            <column name="IDENT" type="VARCHAR2(100 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-15">
+        <createTable tableName="ODGOVOR">
+            <column name="ID" type="NUMBER(19, 0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ODGOVOR"/>
+            </column>
+            <column name="ZAHTEVA_ID" type="NUMBER(19, 0)"/>
+            <column name="TIP_ZAHTEVE" type="VARCHAR2(100 CHAR)"/>
+            <column name="NASLOVNIK" type="VARCHAR2(100 CHAR)"/>
+            <column name="PUBLIC_ID" type="VARCHAR2(36 CHAR)"/>
+            <column name="ORGANIZACIJA_ID" type="VARCHAR2(100 CHAR)"/>
+            <column name="SIGNIRNA_OZNAKA" type="VARCHAR2(255 CHAR)"/>
+            <column name="DATA" type="CLOB"/>
+            <column name="MESSAGE_ID" type="NUMBER(19, 0)"/>
+            <column name="STATUS" type="VARCHAR2(40 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VIR" type="VARCHAR2(100 CHAR)"/>
+            <column name="DATUM_CRE" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATUM_MOD" type="TIMESTAMP(6)"/>
+            <column name="FILES" type="CLOB"/>
+            <column defaultValueNumeric="0" name="VERSION" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS_INFO" type="VARCHAR2(4000 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-16">
+        <createTable tableName="PRAVICA">
+            <column name="ID" type="NUMBER(38, 0)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRAVICA"/>
+            </column>
+            <column name="APLIKACIJA" type="VARCHAR2(10 BYTE)"/>
+            <column name="MATICNA_STEVILKA" type="VARCHAR2(20 BYTE)"/>
+            <column name="CEH_REF" type="VARCHAR2(128 BYTE)"/>
+            <column name="DATUM_CRE" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATUM_MOD" type="TIMESTAMP(6)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-17">
+        <createTable tableName="TMP_TEST6">
+            <column name="ID" type="NUMBER"/>
+            <column name="IME" type="VARCHAR2(200 CHAR)"/>
+            <column name="PRIIMEK" type="VARCHAR2(200 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-18">
+        <createIndex indexName="SYS_C00585339" tableName="ZAHTEVA" unique="true">
+            <column name="PUBLIC_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-19">
+        <addUniqueConstraint columnNames="PUBLIC_ID" constraintName="SYS_C00585339" forIndexName="SYS_C00585339" tableName="ZAHTEVA"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-20">
+        <createIndex indexName="UK_ODGOVOR_MESSAGE_VIR" tableName="ODGOVOR" unique="true">
+            <column name="MESSAGE_ID"/>
+            <column name="VIR"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-21">
+        <addUniqueConstraint columnNames="MESSAGE_ID, VIR" constraintName="UK_ODGOVOR_MESSAGE_VIR" forIndexName="UK_ODGOVOR_MESSAGE_VIR" tableName="ODGOVOR"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-22">
+        <createIndex indexName="IDX_CALLBACK_POS_ZAHTEVA" tableName="CALLBACK_POSILJANJE">
+            <column name="ZAHTEVA_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-23">
+        <createIndex indexName="IDX_ODGOVOR_PUBLICID" tableName="ODGOVOR">
+            <column name="PUBLIC_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-24">
+        <createIndex indexName="IDX_ODGOVOR_ZAHTEVA" tableName="ODGOVOR">
+            <column name="ZAHTEVA_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-25">
+        <createIndex indexName="IDX_PREVZEM_ZAHTEVA" tableName="PREVZEM">
+            <column name="ZAHTEVA_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-26">
+        <createIndex indexName="IDX_PRIPONKA_ZAHTEVA" tableName="PRIPONKA">
+            <column name="ZAHTEVA_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-27">
+        <createIndex indexName="TASK_UQ" tableName="TASK" unique="true">
+            <column computed="true" name="CASE &quot;UNIQUE_FLAG&quot; WHEN 0 THEN NULL ELSE &quot;CONTEXT&quot; END"/>
+            <column computed="true" name="CASE &quot;UNIQUE_FLAG&quot; WHEN 0 THEN NULL ELSE NVL(&quot;CONTEXT_ID&quot;,'') END"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-28">
+        <addForeignKeyConstraint baseColumnNames="ODGOVOR_ID" baseTableName="CALLBACK_POSILJANJE" constraintName="FK_CALLBACK_POS_ODGOVOR" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableCatalogName="PIS_STORITVE_POS" referencedTableName="ODGOVOR" validate="true"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-29">
+        <addForeignKeyConstraint baseColumnNames="ZAHTEVA_ID" baseTableName="CALLBACK_POSILJANJE" constraintName="FK_CALLBACK_POS_ZAHTEVA" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableCatalogName="PIS_STORITVE_POS" referencedTableName="ZAHTEVA" validate="true"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-30">
+        <addForeignKeyConstraint baseColumnNames="ZAHTEVA_ID" baseTableName="ODGOVOR" constraintName="FK_ODGOVOR_ZAHTEVA" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableCatalogName="PIS_STORITVE_POS" referencedTableName="ZAHTEVA" validate="true"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-31">
+        <addForeignKeyConstraint baseColumnNames="ODGOVOR_ID" baseTableName="PREVZEM" constraintName="FK_PREVZEM_ODGOVOR" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableCatalogName="PIS_STORITVE_POS" referencedTableName="ODGOVOR" validate="true"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-32">
+        <addForeignKeyConstraint baseColumnNames="ZAHTEVA_ID" baseTableName="PREVZEM" constraintName="FK_PREVZEM_ZAHTEVA" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableCatalogName="PIS_STORITVE_POS" referencedTableName="ZAHTEVA" validate="true"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1783686834309-33">
+        <addForeignKeyConstraint baseColumnNames="ZAHTEVA_ID" baseTableName="PRIPONKA" constraintName="FK_PRIPONKA_ZAHTEVA" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableCatalogName="PIS_STORITVE_POS" referencedTableName="ZAHTEVA" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
