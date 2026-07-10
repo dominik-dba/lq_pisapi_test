@@ -6,7 +6,7 @@
     "version" : "26.1.2.0"
   },
   "schemas" : [ "PIS_STORITVE_POS", "PIS_STORITVE_APP" ],
-  "lastReleaseVersion" : "",
+  "lastReleaseVersion" : "1.0",
   "export" : {
     "format" : {
       "enable" : true
