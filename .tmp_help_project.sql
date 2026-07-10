@@ -1,0 +1,2 @@
+help project
+exit
