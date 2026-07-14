@@ -5,9 +5,6 @@ set TGT_URL=jdbc:oracle:thin:@ora26ai.src.si:1521/orclpdb
 set TGT_USER=PIS_STORITVE_POS
 set TGT_PASS=PIS_STORITVE_POS
 
-SET LD_LIBRARY_PATH=C:\Oracle\product\instantclient_23_26;C:\Oracle\product\instantclient_23_26;
-SET LIQUIBASE_HOME=C:\Ant\liquibase\
-
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
