@@ -36,7 +36,7 @@ echo.
 
 echo [1/12] Create feature branch from main
 git checkout main || goto :fail
-call :pull_main || goto :fail
+git pull || goto :fail
 git checkout -b %FEATURE_BRANCH% || goto :fail
 echo.
 echo Apply your schema/object changes in DEV now.
@@ -121,18 +121,6 @@ echo   git push -u origin main %STAGE_BRANCH% --tags
 echo.
 echo SUCCESS: next cycle flow completed.
 goto :eof
-
-:pull_main
-git rev-parse --abbrev-ref --symbolic-full-name @{u} >nul 2>&1
-if errorlevel 1 (
-  echo main has no upstream tracking. Using origin/main and setting upstream...
-  git pull origin main || exit /b 1
-  git branch --set-upstream-to=origin/main main >nul 2>&1
-  exit /b 0
-)
-
-git pull || exit /b 1
-exit /b 0
 
 :fail
 echo.
