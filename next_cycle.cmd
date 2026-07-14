@@ -1,3 +1,17 @@
+REM Note: alias sql26 = C:\Ant\sqlcl2026\bin\sql.exe -thin 
+
+SET PATH=.;%PATH%
+
+SET REF_URL=jdbc:oracle:thin:@pngodb.src.si:1521/pngordn
+SET REF_USER=PIS_STORITVE_POS
+SET REF_PASS=PIS_STORITVE_POS
+SET TGT_USER=PIS_STORITVE_POS
+SET TGT_PASS=PIS_STORITVE_POS
+SET TGT_URL=jdbc:oracle:thin:@ora26ai.src.si:1521/orclpdb
+
+SET LD_LIBRARY_PATH=C:\Oracle\product\instantclient_23_26;C:\Oracle\product\instantclient_23_26;
+SET LIQUIBASE_HOME=C:\Ant\liquibase\
+
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
@@ -16,6 +30,8 @@ set "RELEASE_TAG=v%VERSION%"
 set "ARTIFACT=artifact\PISAPI-%VERSION%.zip"
 set "LB_DIFF_FILE=lb_diff_%VERSION%.xml"
 set "LB_DIFF_SQL=lb_diff_%VERSION%.sql"
+
+call :preflight || goto :fail
 
 echo ==========================================================
 echo NEXT CYCLE RUNBOOK - VERSION %VERSION%
@@ -111,6 +127,60 @@ echo   git push -u origin main %STAGE_BRANCH% --tags
 echo.
 echo SUCCESS: next cycle flow completed.
 goto :eof
+
+:preflight
+git rev-parse --is-inside-work-tree >nul 2>&1
+if errorlevel 1 (
+  echo ERROR: current folder is not a git repository.
+  echo Run this script from the project root: %ROOT%
+  exit /b 1
+)
+
+REM where sql26 >nul 2>&1
+REM if errorlevel 1 (
+REM   echo ERROR: sql26 command not found in PATH.
+REM   echo Open a terminal where SQLcl is configured, then retry.
+REM   echo Example: run envrdn.cmd first, then next_cycle.cmd.
+REM   exit /b 1
+REM )
+
+REM where lb >nul 2>&1
+REM if errorlevel 1 (
+REM   echo ERROR: lb command not found in PATH.
+REM   echo Ensure Liquibase/SQLcl lb command is available in this terminal.
+REM   exit /b 1
+REM )
+
+set "HAS_CHANGES="
+for /f %%i in ('git status --porcelain') do (
+  set "HAS_CHANGES=1"
+  goto :dirty_done
+)
+:dirty_done
+if defined HAS_CHANGES (
+  echo ERROR: working tree is not clean. Commit or stash changes first.
+  git status --short
+  echo Suggested commands:
+  echo   git add . ^&^& git commit -m "WIP before next_cycle"
+  echo   git stash push -m "WIP before next_cycle"
+  exit /b 1
+)
+
+git show-ref --verify --quiet refs/heads/%FEATURE_BRANCH%
+if not errorlevel 1 (
+  echo ERROR: feature branch already exists: %FEATURE_BRANCH%
+  echo Use a different ticket/version or delete/reuse the existing branch.
+  exit /b 1
+)
+
+git show-ref --verify --quiet refs/heads/%STAGE_BRANCH%
+if not errorlevel 1 (
+  echo ERROR: stage branch already exists: %STAGE_BRANCH%
+  echo Delete it or use a different version.
+  exit /b 1
+)
+
+exit /b 0
 
 :fail
 echo.
