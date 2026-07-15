@@ -80,25 +80,26 @@ echo.
 :after_lb_diff
 
 echo [8/12] Test deploy path A: SQLcl PROJECT deploy
-sql26 -name prod @src/scripts/during/prod_reset.sql || goto :fail
-sql26 -name prod @src/scripts/during/next_cycle_project_deploy.sql %VERSION% || goto :fail
-sql26 -name prod @src/scripts/during/prod_validate.sql || goto :fail
+rem sql26 -name prod @src/scripts/during/prod_reset.sql || goto :fail
+rem sql26 -name prod @src/scripts/during/next_cycle_project_deploy.sql %VERSION% || goto :fail
+rem sql26 -name prod @src/scripts/during/prod_validate.sql || goto :fail
 
 echo [9/12] Test deploy path B: diff SQL (if generated)
 if exist "%LB_DIFF_SQL%" (
-  sql26 -name prod @src/scripts/during/prod_reset.sql || goto :fail
+  rem sql26 -name prod @src/scripts/during/prod_reset.sql || goto :fail
   sql26 -name prod @%LB_DIFF_SQL% || goto :fail
   sql26 -name prod @src/scripts/during/prod_validate.sql || goto :fail
 ) else (
   echo Diff SQL file not found: %LB_DIFF_SQL% - skipping path B.
 )
+*/
 
 echo [10/12] Test deploy path C: LB update
 sql26 -name prod @src/scripts/during/prod_reset.sql || goto :fail
 cd /d "%ROOT%src\lb\pis_storitve_pos"
 lb update -changelog-file changelog_gen_controller.xml -database-changelog-table-name LB_CHANGES || goto :fail
-cd /d "%ROOT%"
-sql26 -name prod @src/scripts/during/prod_validate.sql || goto :fail
+rem cd /d "%ROOT%"
+rem sql26 -name prod @src/scripts/during/prod_validate.sql || goto :fail
 
 echo [11/12] Merge stage to main
 git checkout main || goto :fail

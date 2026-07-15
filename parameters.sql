@@ -1,0 +1,15 @@
+-- Bazne nastavitve
+DEFINE Connect_Str = pngordn
+
+-- Posebne nastavitve okolja
+DEFINE SEPARATOR=/
+
+-- SHEMA-owner imena
+DEFINE U_PIS_STORITVE_POS          	= PIS_STORITVE_POS
+DEFINE U_PIS_STORITVE_APP          	= PIS_STORITVE_APP
+
+-- SHEMA-owner gesla
+DEFINE G_PIS_STORITVE_POS           = PIS_STORITVE_POS
+DEFINE G_PIS_STORITVE_APP         	= PIS_STORITVE_APP
+
+CONNECT PIS_STORITVE_POS&&SEPARATOR&&G_PIS_STORITVE_POS@&&Connect_Str
