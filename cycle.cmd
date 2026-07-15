@@ -1,4 +1,4 @@
-REM USAGE: next_cycle_final.cmd 1.3 cycle
+REM USAGE: cycle.cmd 1.1 cycle
 
 set REF_URL=jdbc:oracle:thin:@pngodb.src.si:1521/pngordn
 set REF_USER=PIS_STORITVE_POS
