@@ -318,6 +318,12 @@ REM sql26 -name dev @src/scripts/during/next_cycle_project_release.sql $VERSION
 echo [6/9] Freeze release in git
 git add .
 git commit -m "Release %VERSION%"
+
+REM Powershell
+REM git add .
+REM git commit -m "Release $VERSION"
+
+
 git add dist/ artifact/
 git commit -m "Freeze release %VERSION% baseline"
 git tag %RELEASE_TAG%
