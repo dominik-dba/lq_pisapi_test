@@ -326,13 +326,23 @@ REM git commit -m "Release $VERSION"
 
 git add dist/ artifact/
 git commit -m "Freeze release %VERSION% baseline"
+
+REM Powershell
+REM git commit -m "Freeze release $VERSION baseline"
+
+
+
 git tag %RELEASE_TAG%
+REM Powershell
+REM git tag $RELEASE_TAG
+
+
 
 echo [7/9] Optional incremental deploy to PROD (no reset)
 echo If PROD already has previous version, this deploy applies only new changesets.
 pause
-sql26 -name prod @src/scripts/during/next_cycle_project_deploy.sql %VERSION% || goto :fail
-sql26 -name prod @src/scripts/during/prod_validate.sql || goto :fail
+rem sql26 -name prod @src/scremripts/during/next_cycle_project_deploy.sql %VERSION% || goto :fail
+rem sql26 -name prod @src/scripts/during/prod_validate.sql || goto :fail
 
 echo [8/9] Merge stage to main
 
