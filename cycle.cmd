@@ -17,7 +17,12 @@ SET LD_LIBRARY_PATH=C:\Oracle\product\instantclient_23_26;C:\Oracle\product\inst
 REM Powershell
 REM $env:LD_LIBRARY_PATH = "C:\Oracle\product\instantclient_23_26;C:\Oracle\product\instantclient_23_26"
 
+git add .
+git commit -m "NC"
 
+REM Powershell
+REM git rev-parse --is-inside-work-tree
+REM true
 
 
 SET LIQUIBASE_HOME=C:\Ant\liquibase\
@@ -25,10 +30,11 @@ SET LIQUIBASE_HOME=C:\Ant\liquibase\
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
+
+set "ROOT=%~dp0"
 REM Powershell
 REM $env:ROOT = "C:\Install\Db\PISAPILQ2050"
 
-set "ROOT=%~dp0"
 cd /d "%ROOT%"
 
 set "VERSION=%~1"
@@ -53,7 +59,12 @@ REM cmd /v:on /c "set TICKET=cycle&&set VERSION=1.2&&set STAGE_BRANCH=stage/!VER
 
 
 
+
+
 call :preflight || goto :fail
+
+REM Powershell
+REM git rev-parse --is-inside-work-tree
 
 echo ==========================================================
 echo NEXT CYCLE RUNBOOK - VERSION %VERSION%
@@ -68,9 +79,25 @@ REM git add .
 REM git commit -m "WIP before cycle run"
 
 echo [1/9] Create feature branch from main
+git push
 git checkout main || goto :fail
+
+
+
 call :pull_main || goto :fail
+REM Powershell
+REM $REMOTE_NAME = "origin"
+REM git ls-remote --exit-code --heads $REMOTE_NAME main
+REM git rev-parse --abbrev-ref --symbolic-full-name '@{u}'
+REM git pull
+
+
+
 git checkout -b %FEATURE_BRANCH% || goto :fail
+REM Powershell
+REM $FEATURE_BRANCH = "feature/PISAPI-1.2-2053"
+REM git checkout -b $FEATURE_BRANCH
+
 
 REM cmd /v:on /c "set TICKET=cycle&&set VERSION=1.1&&set STAGE_BRANCH=stage/!VERSION!&&set RELEASE_TAG=v!VERSION!&&set ARTIFACT=artifact\PISAPI-!VERSION!.zip&&set set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!"
 
@@ -127,9 +154,17 @@ echo [3/9] Commit feature changes and merge to main
 git add .
 git commit -m "Feature %TICKET%: export project changes"
 git checkout main || goto :fail
+
+REM Powershell
+REM $FEATURE_BRANCH = "feature/PISAPI-1.2-2053"
+REM git merge --no-ff $FEATURE_BRANCH -m "Merge $FEATURE_BRANCH to main"
 git merge --no-ff %FEATURE_BRANCH% -m "Merge %FEATURE_BRANCH% to main" || goto :fail
+
 git checkout -b %STAGE_BRANCH% || goto :fail
 
+REM Powershell
+REM $STAGE_BRANCH = "stage/1.2"
+REM git checkout -b $STAGE_BRANCH
 -- 
 
 echo ==========================================================
@@ -307,6 +342,14 @@ if not defined REMOTE_NAME (
 )
 
 git ls-remote --exit-code --heads %REMOTE_NAME% main >nul 2>&1
+
+REM Powershell
+REM $REMOTE_NAME = "origin"
+REM git ls-remote --exit-code --heads $REMOTE_NAME main
+REM git rev-parse --abbrev-ref --symbolic-full-name '@{u}'
+REM git pull
+
+
 if errorlevel 1 (
 	echo WARNING: %REMOTE_NAME%/main does not exist yet. Skipping pull for initial remote bootstrap.
 	exit /b 0
