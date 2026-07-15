@@ -123,12 +123,6 @@ echo SUCCESS: next cycle flow completed.
 goto :eof
 
 :pull_main
-git ls-remote --exit-code --heads origin main >nul 2>&1
-if errorlevel 1 (
-  echo WARNING: origin/main does not exist yet. Skipping pull for initial remote bootstrap.
-  exit /b 0
-)
-
 git rev-parse --abbrev-ref --symbolic-full-name @{u} >nul 2>&1
 if errorlevel 1 (
   echo main has no upstream tracking. Using origin/main and setting upstream...

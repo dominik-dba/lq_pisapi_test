@@ -5,6 +5,12 @@ set TGT_URL=jdbc:oracle:thin:@ora26ai.src.si:1521/orclpdb
 set TGT_USER=PIS_STORITVE_POS
 set TGT_PASS=PIS_STORITVE_POS
 
+<<<<<<< HEAD
+=======
+SET LD_LIBRARY_PATH=C:\Oracle\product\instantclient_23_26;C:\Oracle\product\instantclient_23_26;
+SET LIQUIBASE_HOME=C:\Ant\liquibase\
+
+>>>>>>> stage/1.2
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
@@ -33,7 +39,11 @@ echo.
 
 echo [1/12] Create feature branch from main
 git checkout main || goto :fail
+<<<<<<< HEAD
 git pull || goto :fail
+=======
+call :pull_main || goto :fail
+>>>>>>> stage/1.2
 git checkout -b %FEATURE_BRANCH% || goto :fail
 echo.
 echo Apply your schema/object changes in DEV now.
@@ -87,6 +97,7 @@ echo.
 :after_lb_diff
 
 echo [8/12] Test deploy path A: SQLcl PROJECT deploy
+<<<<<<< HEAD
 sql26 -name prod @src/scripts/during/prod_reset.sql || goto :fail
 sql26 -name prod @src/scripts/during/next_cycle_project_deploy.sql %VERSION% || goto :fail
 sql26 -name prod @src/scripts/during/prod_validate.sql || goto :fail
@@ -94,18 +105,36 @@ sql26 -name prod @src/scripts/during/prod_validate.sql || goto :fail
 echo [9/12] Test deploy path B: diff SQL (if generated)
 if exist "%LB_DIFF_SQL%" (
   sql26 -name prod @src/scripts/during/prod_reset.sql || goto :fail
+=======
+rem sql26 -name prod @src/scripts/during/prod_reset.sql || goto :fail
+rem sql26 -name prod @src/scripts/during/next_cycle_project_deploy.sql %VERSION% || goto :fail
+rem sql26 -name prod @src/scripts/during/prod_validate.sql || goto :fail
+
+echo [9/12] Test deploy path B: diff SQL (if generated)
+if exist "%LB_DIFF_SQL%" (
+  rem sql26 -name prod @src/scripts/during/prod_reset.sql || goto :fail
+>>>>>>> stage/1.2
   sql26 -name prod @%LB_DIFF_SQL% || goto :fail
   sql26 -name prod @src/scripts/during/prod_validate.sql || goto :fail
 ) else (
   echo Diff SQL file not found: %LB_DIFF_SQL% - skipping path B.
 )
+<<<<<<< HEAD
+=======
+*/
+>>>>>>> stage/1.2
 
 echo [10/12] Test deploy path C: LB update
 sql26 -name prod @src/scripts/during/prod_reset.sql || goto :fail
 cd /d "%ROOT%src\lb\pis_storitve_pos"
 lb update -changelog-file changelog_gen_controller.xml -database-changelog-table-name LB_CHANGES || goto :fail
+<<<<<<< HEAD
 cd /d "%ROOT%"
 sql26 -name prod @src/scripts/during/prod_validate.sql || goto :fail
+=======
+rem cd /d "%ROOT%"
+rem sql26 -name prod @src/scripts/during/prod_validate.sql || goto :fail
+>>>>>>> stage/1.2
 
 echo [11/12] Merge stage to main
 git checkout main || goto :fail
@@ -119,6 +148,27 @@ echo.
 echo SUCCESS: next cycle flow completed.
 goto :eof
 
+<<<<<<< HEAD
+=======
+:pull_main
+git ls-remote --exit-code --heads origin main >nul 2>&1
+if errorlevel 1 (
+  echo WARNING: origin/main does not exist yet. Skipping pull for initial remote bootstrap.
+  exit /b 0
+)
+
+git rev-parse --abbrev-ref --symbolic-full-name @{u} >nul 2>&1
+if errorlevel 1 (
+  echo main has no upstream tracking. Using origin/main and setting upstream...
+  git pull origin main || exit /b 1
+  git branch --set-upstream-to=origin/main main >nul 2>&1
+  exit /b 0
+)
+
+git pull || exit /b 1
+exit /b 0
+
+>>>>>>> stage/1.2
 :fail
 echo.
 echo ERROR: command failed with exit code %ERRORLEVEL%.

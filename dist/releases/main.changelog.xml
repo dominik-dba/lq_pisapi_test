@@ -3,5 +3,9 @@
 					   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
 					   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 					   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+<<<<<<< HEAD
 <include file="1.3/release.changelog.xml" relativeToChangelogFile="true"/>
+=======
+<include file="1.2/release.changelog.xml" relativeToChangelogFile="true"/>
+>>>>>>> stage/1.2
 </databaseChangeLog>
