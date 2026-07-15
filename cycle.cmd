@@ -349,11 +349,20 @@ echo [8/9] Merge stage to main
 git checkout main || goto :fail
 git merge --no-ff %STAGE_BRANCH% -m "Merge %STAGE_BRANCH% to main" || goto :fail
 
+REM Powershell
+REM git merge --no-ff $STAGE_BRANCH -m "Merge $STAGE_BRANCH to main" 
+
+
 echo [9/9] Final commit/tag push (manual review first)
 
 echo NOTE: 
 echo Deploy using SQLcl Project artifact:
 echo   sql26 -name prod @src/scripts/during/next_cycle_project_deploy.sql %VERSION%
+
+
+REM Powershel
+REM echo   sql26 -name prod @src/scripts/during/next_cycle_project_deploy.sql $VERSION
+
 echo No LB diff/update-sql path is used in this incremental cycle script.
 echo Review branch state and push when ready:
 if defined REMOTE_NAME (
