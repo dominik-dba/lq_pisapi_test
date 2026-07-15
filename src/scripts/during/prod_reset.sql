@@ -26,6 +26,11 @@ end;
 /
 
 @namesti_dba.sql
+
+truncate table system.DATABASECHANGELOG;
+
 @parameters_prod.sql
+
+
 
 commit;

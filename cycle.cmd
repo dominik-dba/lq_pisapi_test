@@ -111,20 +111,20 @@ echo ==========================================================
 
 rem lb diff-changelog -reference-url=%REF_URL% -reference-username=%REF_USER% -reference-password=%REF_PASS% -url=%TGT_URL% -username=%TGT_USER% -password=%TGT_PASS% -default-schema-name=PIS_STORITVE_POS -diff-types=columns,foreignkeys,indexes,primarykeys,tables,sequences,uniqueconstraints,views -include-schema=false -include-tablespace=false -output-default-schema=false -changelog-file=%LB_DIFF_FILE% || goto :fail
 
-liquibase ^
- --url=%TGT_URL% ^
- --username=%TGT_USER% ^
- --password=%TGT_PASS% ^
- --reference-url=%REF_URL% ^
- --reference-username=%REF_USER% ^
- --reference-password=%REF_PASS% ^
- --default-schema-name=PIS_STORITVE_POS ^
- --diff-types=columns,foreignkeys,indexes,primarykeys,tables,sequences,uniqueconstraints,views ^
- --include-schema=false ^
- --include-tablespace=false ^
- --output-default-schema=false ^
- diff-changelog ^
- --changelog-file=%LB_DIFF_FILE% || goto :fail
+rem liquibase ^
+rem  --url=%TGT_URL% ^
+rem  --username=%TGT_USER% ^
+rem  --password=%TGT_PASS% ^
+rem  --reference-url=%REF_URL% ^
+rem  --reference-username=%REF_USER% ^
+rem  --reference-password=%REF_PASS% ^
+rem  --default-schema-name=PIS_STORITVE_POS ^
+rem  --diff-types=columns,foreignkeys,indexes,primarykeys,tables,sequences,uniqueconstraints,views ^
+rem  --include-schema=false ^
+rem  --include-tablespace=false ^
+rem  --output-default-schema=false ^
+rem  diff-changelog ^
+rem  --changelog-file=%LB_DIFF_FILE% || goto :fail
 
 echo ==========================================================
 echo LB UPDATE
@@ -132,17 +132,17 @@ echo ==========================================================
 
 rem lb update-sql -changelog-file=%LB_DIFF_FILE% -database-changelog-table-name=LB_CHANGES -default-schema-name=PIS_STORITVE_POS -liquibase-schema-name=PIS_STORITVE_POS -output-default-schema=false -output-file=%LB_DIFF_SQL% || goto :fail
 
-liquibase ^
- --database-changelog-table-name=LB_CHANGES ^
- --default-schema-name=PIS_STORITVE_POS ^
- --liquibase-schema-name=PIS_STORITVE_POS ^
- --url=%TGT_URL% ^
- --username=%TGT_USER% ^
- --password=%TGT_PASS% ^
- --changelog-file=%LB_DIFF_FILE% ^
- --output-default-schema=false ^
- update-sql ^
- --output-file=%LB_DIFF_SQL% || goto :fail
+rem liquibase ^
+rem  --database-changelog-table-name=LB_CHANGES ^
+rem  --default-schema-name=PIS_STORITVE_POS ^
+rem  --liquibase-schema-name=PIS_STORITVE_POS ^
+rem  --url=%TGT_URL% ^
+rem  --username=%TGT_USER% ^
+rem  --password=%TGT_PASS% ^
+rem  --changelog-file=%LB_DIFF_FILE% ^
+rem  --output-default-schema=false ^
+rem  update-sql ^
+rem  --output-file=%LB_DIFF_SQL% || goto :fail
  
 goto :after_lb_diff
 
