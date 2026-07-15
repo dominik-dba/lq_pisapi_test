@@ -157,19 +157,30 @@ git add -A
 git add .
 git commit -m "Prepare release changelog %VERSION%"
 
-cmd /c "set VERSION=1.1 && echo %VERSION%"
+REM cmd /c "set VERSION=1.1 && echo %VERSION%"
+REM 
+REM cmd /v:on /c "set VERSION=1.1 && echo !VERSION!"
+REM cmd /v:on /c "set TICKET=cycle && echo !TICKET!"
+REM cmd /v:on /c "set VERSION=1.1&&set TICKET=INC_DROP_CREATE&&set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!&&echo !FEATURE_BRANCH!"
+REM 
+REM cmd /v:on /c "set TICKET=cycle&&set VERSION=1.1&&set STAGE_BRANCH=stage/!VERSION!&&set RELEASE_TAG=v!VERSION!&&set ARTIFACT=artifact\PISAPI-!VERSION!.zip&&echo !STAGE_BRANCH!&&echo !RELEASE_TAG!"
+REM 
+REM cmd /v:on /c "set VERSION=1.1&&set TICKET=INC_DROP_CREATE&&set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!&&echo !FEATURE_BRANCH!"
+REM 
+REM sql26 -name dev @src/scripts/during/next_cycle_project_stage.sql
 
-cmd /v:on /c "set VERSION=1.1 && echo !VERSION!"
-cmd /v:on /c "set TICKET=cycle && echo !TICKET!"
-cmd /v:on /c "set VERSION=1.1&&set TICKET=INC_DROP_CREATE&&set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!&&echo !FEATURE_BRANCH!"
-
-cmd /v:on /c "set TICKET=cycle&&set VERSION=1.1&&set STAGE_BRANCH=stage/!VERSION!&&set RELEASE_TAG=v!VERSION!&&set ARTIFACT=artifact\PISAPI-!VERSION!.zip&&echo !STAGE_BRANCH!&&echo !RELEASE_TAG!"
-
-cmd /v:on /c "set VERSION=1.1&&set TICKET=INC_DROP_CREATE&&set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!&&echo !FEATURE_BRANCH!"
-
-sql26 -name dev @src/scripts/during/next_cycle_project_stage.sql
 
 
+again remove stage branch
+move to main
+
+
+mkdir C:\Install\Db\PISAPILQ2050\dist\releases\next
+
+REM xcopy C:\Install\Db\PISAPILQ2050\src\database\*.* C:\Install\Db\PISAPILQ2050\dist\releases\next\ /S /I /Y
+REM el C:\Install\Db\PISAPILQ2050\src\database\pis_storitve_pos\tmp_test2052.sql
+
+REM sql26 -name dev @src/scripts/during/next_cycle_project_release.sql %VERSION%
 
 
 REM Immediately check:
@@ -183,6 +194,9 @@ echo RELEASE, GEN ARTIFACT
 echo ==========================================================
 
 echo [5/9] PROJECT release and artifact generation
+
+mkdir 
+
 sql26 -name dev @src/scripts/during/next_cycle_project_release.sql %VERSION% || goto :fail
 
 echo [6/9] Freeze release in git
@@ -260,6 +274,8 @@ if not defined REMOTE_NAME (
 	)
 )
 exit /b 0
+
+rem set REMOTE_NAME=origin
 
 :pull_main
 call :detect_remote
