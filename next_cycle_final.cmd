@@ -187,15 +187,14 @@ echo PULL_MAIN
 echo ==========================================================
 
 :pull_main
-git rev-parse --abbrev-ref --symbolic-full-name @{u} >nul 2>&1
-if errorlevel 1 (
-  echo main has no upstream tracking. Using origin/main and setting upstream...
-  git pull origin main || exit /b 1
-  git branch --set-upstream-to=origin/main main >nul 2>&1
-  exit /b 0
-)
-
-git pull || exit /b 1
+rem git rev-parse --abbrev-ref --symbolic-full-name @{u} >nul 2>&1
+rem if errorlevel 1 (
+rem   echo main has no upstream tracking. Using origin/main and setting upstream...
+rem   git pull main || exit /b 1
+rem   git branch --set-upstream-to=origin/main main >nul 2>&1
+rem   exit /b 0
+rem )
+rem git pull || exit /b 1
 exit /b 0
 
 :fail
