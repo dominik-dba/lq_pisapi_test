@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-					   xmlns="http" relativeToChangelogFile="true"/>://www.liquibase.org/xml/ns/dbchangelog"
-					   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+				   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+				   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 						  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 <include file="pis_storitve_pos\sequences\callback_posiljanje_seq.sql" relativeToChangelogFile="true"/>
 <include file="pis_storitve_pos\sequences\napaka_odgovora_seq.sql" relativeToChangelogFile="true"/>
