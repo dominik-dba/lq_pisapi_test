@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+  <!-- New table in this cycle -->
+  <include file="pis_storitve_pos/tables/tmp_test2053.sql" relativeToChangelogFile="true"/>
+
+  <!-- Drop/change scripts for removed objects in this cycle -->
+  <!-- example -->
+  <include file="pis_storitve_pos/tables/drop_old_table.sql" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>
