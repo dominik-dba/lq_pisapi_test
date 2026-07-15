@@ -208,28 +208,57 @@ REM SQL> !git commit -m "Prepare release changelog 1.1"
 REM [%STAGE_BRANCH% 1b2fd3d] Prepare release changelog 1.1
 REM  1 file changed, 2 insertions(+), 1 deletion(-)
 
+REM LATEST RESULT vi VSCode Powershell
+
+REM SQL> PROJECT stage -verbose
+REM The current connection SYSTEM will be used for all operations
+REM 
+REM Starting execution of stage command using the current branch
+REM 
+REM Stage is Comparing:
+REM Old Branch      refs/heads/main
+REM New Branch      refs/heads/stage/1.2
+REM 
+REM 
+REM Completed executing stage command on branch: stage/1.2
+REM 
+REM Stage processing completed, please review and commit your changes to repository
+REM 
+REM Changes not staged for commit
+REM         modified: cycle.cmd
+REM 
+REM  Untracked files:
+REM         artifact
+REM         src/lb
+REM         lb-project
+REM         src/scripts/after
+REM         src/scripts/before
 
 
 git add -A
 git add .
 git commit -m "Prepare release changelog %VERSION%"
 
-REM cmd /c "set VERSION=1.1 && echo %VERSION%"
+REM Powershell
+REM $VERSION = "1.2"
+REM git commit -m "Prepare release changelog $VERSION"
+
+
+REM cmd /c "set VERSION=1.2 && echo %VERSION%"
 REM 
-REM cmd /v:on /c "set VERSION=1.1 && echo !VERSION!"
-REM cmd /v:on /c "set TICKET=cycle && echo !TICKET!"
-REM cmd /v:on /c "set VERSION=1.1&&set TICKET=INC_DROP_CREATE&&set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!&&echo !FEATURE_BRANCH!"
-REM 
-REM cmd /v:on /c "set TICKET=cycle&&set VERSION=1.1&&set STAGE_BRANCH=stage/!VERSION!&&set RELEASE_TAG=v!VERSION!&&set ARTIFACT=artifact\PISAPI-!VERSION!.zip&&echo !STAGE_BRANCH!&&echo !RELEASE_TAG!"
-REM 
-REM cmd /v:on /c "set VERSION=1.1&&set TICKET=INC_DROP_CREATE&&set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!&&echo !FEATURE_BRANCH!"
+REM cmd /v:on /c "set VERSION=1.2&&set TICKET=cycle&&set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!&&echo !FEATURE_BRANCH!"
 REM 
 REM sql26 -name dev @src/scripts/during/next_cycle_project_stage.sql
 
 
+REM Powershell
+REM $TICKET= "cycle"
+REM sql26 -name dev @src/scripts/during/next_cycle_project_stage.sql
 
-again remove stage branch
-move to main
+
+
+REM again remove stage branch
+REM move to main
 
 
 mkdir C:\Install\Db\PISAPILQ2050\dist\releases\next
