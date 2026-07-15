@@ -36,13 +36,14 @@ echo Stage branch:   %STAGE_BRANCH%
 echo ==========================================================
 echo.
 
-echo [0/12] WIP before cycle run
-git status
-git add .
-git commit -m "WIP before cycle run"
+REM echo [0/12] WIP before cycle run
+REM git status
+REM git add .
+REM git commit -m "WIP before cycle run"
 
 echo [1/12] Create feature branch from main
 git checkout main || goto :fail
+git pull origin main
 
 echo ==========================================================
 echo PULL
@@ -153,7 +154,7 @@ echo LB diff skipped because one or more env vars are missing.
 echo.
 :after_lb_diff
 
-git add lb_diff_%VERSION%".xml lb_diff_%VERSION%".sql
+git add "lb_diff_%VERSION%.xml" "lb_diff_%VERSION%.sql"
 git commit -m "LB diff and update-sql for %VERSION%"
 
 echo [8/12] For deploy path A (SQLcl PROJECT deploy)  
