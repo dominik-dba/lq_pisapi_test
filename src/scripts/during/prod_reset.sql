@@ -27,10 +27,12 @@ end;
 
 @namesti_dba.sql
 
+select count(*) from system.DATABASECHANGELOG;
+
 truncate table system.DATABASECHANGELOG;
 
+select count(*) from system.DATABASECHANGELOG;
+
 @parameters_prod.sql
-
-
 
 commit;
