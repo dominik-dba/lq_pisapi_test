@@ -31,6 +31,7 @@ set "REMOTE_NAME="
 set "LB_DIFF_FILE=lb_diff_%VERSION%.xml"
 set "LB_DIFF_SQL=lb_diff_%VERSION%.sql"
 
+
 call :preflight || goto :fail
 
 echo ==========================================================
