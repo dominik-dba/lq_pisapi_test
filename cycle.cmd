@@ -254,7 +254,8 @@ REM sql26 -name dev @src/scripts/during/next_cycle_project_stage.sql
 REM Powershell
 REM $TICKET= "cycle"
 REM sql26 -name dev @src/scripts/during/next_cycle_project_stage.sql
-
+REM git add -A
+REM git commit -m "PROJECT stage for 1.2"
 
 
 REM again remove stage branch
@@ -263,8 +264,34 @@ REM move to main
 
 mkdir C:\Install\Db\PISAPILQ2050\dist\releases\next
 
-REM xcopy C:\Install\Db\PISAPILQ2050\src\database\*.* C:\Install\Db\PISAPILQ2050\dist\releases\next\ /S /I /Y
-REM el C:\Install\Db\PISAPILQ2050\src\database\pis_storitve_pos\tmp_test2052.sql
+REM 53 je nova, dropajo se preko C:\Install\Db\PISAPILQ2050\dist\releases\next\release.changelog.xml
+REM C:\Install\Db\PISAPILQ2050\dist\releases\next\pis_storitve_pos\tables\drop_old_table.sql
+
+REM begin
+REM   execute immediate 'drop table pis_storitve_pos.test_2066';
+REM exception when others then
+REM   null;
+REM end;
+REM /
+REM 
+REM begin
+REM   execute immediate 'drop table pis_storitve_pos.tmp_test6';
+REM exception when others then
+REM   null;
+REM end;
+REM /
+REM 
+REM begin
+REM   execute immediate 'drop table pis_storitve_pos.tmp_test2052';
+REM exception when others then
+REM   null;
+REM end;
+REM /
+
+
+
+REM REM xcopy C:\Install\Db\PISAPILQ2050\src\database\*.* C:\Install\Db\PISAPILQ2050\dist\releases\next\ /S /I /Y
+REM REM el C:\Install\Db\PISAPILQ2050\src\database\pis_storitve_pos\tmp_test2052.sql
 
 REM sql26 -name dev @src/scripts/during/next_cycle_project_release.sql %VERSION%
 
@@ -284,6 +311,9 @@ echo [5/9] PROJECT release and artifact generation
 mkdir 
 
 sql26 -name dev @src/scripts/during/next_cycle_project_release.sql %VERSION% || goto :fail
+
+REM Powershell
+REM sql26 -name dev @src/scripts/during/next_cycle_project_release.sql $VERSION
 
 echo [6/9] Freeze release in git
 git add .
