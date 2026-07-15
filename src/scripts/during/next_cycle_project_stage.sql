@@ -1,7 +1,3 @@
-
-
-
-
 set echo on
 set feedback on
 set define on
