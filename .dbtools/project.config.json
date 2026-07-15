@@ -47,6 +47,5 @@
     "generatedFormat" : "liquibase",
     "softObjectIsolation" : "change",
     "substituteSchemas" : false
-  },
-  "lastReleaseVersion" : "1.0"
+  }
 }

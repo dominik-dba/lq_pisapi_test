@@ -33,6 +33,11 @@ truncate table system.DATABASECHANGELOG;
 
 select count(*) from system.DATABASECHANGELOG;
 
+UPDATE SYSTEM.DATABASECHANGELOGLOCK
+SET locked = 0, lockgranted = NULL, lockedby = NULL
+WHERE id = 1;
+COMMIT;
+
 @parameters_prod.sql
 
 commit;
