@@ -233,6 +233,12 @@ if not defined REMOTE_NAME (
 	exit /b 0
 )
 
+git ls-remote --exit-code --heads %REMOTE_NAME% main >nul 2>&1
+if errorlevel 1 (
+	echo WARNING: %REMOTE_NAME%/main does not exist yet. Skipping pull for initial remote bootstrap.
+	exit /b 0
+)
+
 git rev-parse --abbrev-ref --symbolic-full-name @{u} >nul 2>&1
 if errorlevel 1 (
 	echo main has no upstream tracking. Using %REMOTE_NAME%/main and setting upstream...
