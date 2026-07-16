@@ -55,10 +55,6 @@ set "ARTIFACT=artifact\PISAPI-%VERSION%.zip"
 set "REMOTE_NAME="
 set "LB_DIFF_FILE=lb_diff_%VERSION%.xml"
 set "LB_DIFF_SQL=lb_diff_%VERSION%.sql"
-set REMOTE_NAME=origin
-
-REM Check .dbtools\project.config.json
-REM     "lastReleaseVersion" : "1.4"
 
 	
 REM Powershell
@@ -70,15 +66,11 @@ git commit -m "NC"
 git push
 cd /d "%ROOT%"
 
-REM 1. Create feature from main.
-
 REM Powershell
 REM git rev-parse --is-inside-work-tree
-REM REM git push
-REM REM git checkout main
-REM git ls-remote --exit-code --heads %REMOTE_NAME% main
-REM git rev-parse --abbrev-ref --symbolic-full-name @{u}
-REM REM git pull 
+REM true
+
+
 REM Powershell
 REM cmd /v:on /c "set TICKET=cycle&&set VERSION=1.2&&set STAGE_BRANCH=stage/!VERSION!&&set RELEASE_TAG=v!VERSION!&&set ARTIFACT=artifact\PISAPI-!VERSION!.zip&&set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!"&&set "LB_DIFF_FILE=lb_diff_!VERSION!.xml"&&set "LB_DIFF_SQL=lb_diff_!VERSION!.sql"
 
@@ -101,11 +93,9 @@ REM git add .
 REM git commit -m "WIP before cycle run"
 
 echo [1/9] Create feature branch from main
-REM git push
-REM REM git checkout main || goto :fail
+git push
+REM git checkout main || goto :fail
 
-
-REM 2. Do DB changes + PROJECT export on feature.
 call :pull_main || goto :fail
 REM Powershell
 REM $REMOTE_NAME = "origin"
@@ -118,12 +108,6 @@ REM Powershell
 REM $FEATURE_BRANCH = "feature/PISAPI-1.2-2053"
 REM git checkout -b $FEATURE_BRANCH
 
-REM Do database changes on dev
-REM   sql26 -name dev
-REM   alter table pis_storitve_pos.tmp_test2054 add AGE NUMBER;
-REM   create table pis_storitve_pos.tmp_test2055 as select * from pis_storitve_pos.tmp_test2054;
-REM   alter table pis_storitve_pos.tmp_test2054 add NEWAGE NUMBER;
-REM   create table pis_storitve_pos.tmp_test2056 as select * from pis_storitve_pos.tmp_test2054;
 
 REM cmd /v:on /c "set TICKET=cycle&&set VERSION=1.1&&set STAGE_BRANCH=stage/!VERSION!&&set RELEASE_TAG=v!VERSION!&&set ARTIFACT=artifact\PISAPI-!VERSION!.zip&&set set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!"
 
@@ -139,9 +123,6 @@ echo [2/9] PROJECT export from DEV
 sql26 -name dev @src/scripts/during/next_cycle_project_export.sql || goto :fail
 echo.
 
-REM sql26 -name dev
-REM PROJECT export -schemas PIS_STORITVE_POS,PIS_STORITVE_APP -verbose
-REM exit
 
 REM echo manually remove dropped objects from src\database
 REM **************** DROP TABLE *********************
@@ -179,27 +160,16 @@ REM set "ARTIFACT=artifact\PISAPI-%VERSION%.zip"
 
 REM 3. Commit feature.
 
-REM git add -A
+
+echo [3/9] Commit feature changes and merge to main
 git add .
 git commit -m "Feature %TICKET%: export project changes"
 REM git checkout main || goto :fail
-
-REM 4. Create stage branch from feature (or move feature commits onto stage).
 
 REM Powershell
 REM $FEATURE_BRANCH = "feature/PISAPI-1.2-2053"
 REM git merge --no-ff $FEATURE_BRANCH -m "Merge $FEATURE_BRANCH to main"
 REM git merge --no-ff %FEATURE_BRANCH% -m "Merge %FEATURE_BRANCH% to main" || goto :fail
-
-REM NEW
-
-REM Option A: create stage directly from feature (recommended)
-REM 
-REM Make sure feature has your latest commit:
-
-REM WRONG git checkout main 
-REM WRONG git merge --no-ff %FEATURE_BRANCH% -m "Merge %FEATURE_BRANCH% to main"
-
 
 git checkout -b %STAGE_BRANCH% || goto :fail
 
@@ -208,31 +178,12 @@ REM $STAGE_BRANCH = "stage/1.2"
 REM git checkout -b $STAGE_BRANCH
 -- 
 
-REM WRONG git merge --no-ff %FEATURE_BRANCH% -m "Merge %FEATURE_BRANCH% to main"
-
-REM git checkout feature/PISAPI-%VERSION%-cycle
-REM git status
-REM Create stage from that exact feature tip:
-git checkout -b %STAGE_BRANCH% 
-REM Verify relation:
-git log --oneline --decorate --graph -n 10
-
-	REM B: stage exists already, move it to feature tip
-	REM 
-	REM Update/create stage pointer to feature:
-	REM git branch -f stage/1.3 feature/PISAPI-1.3-cycle
-	REM Switch to stage:
-	REM git checkout stage/1.3
 echo ==========================================================
 echo STAGE
 echo ==========================================================
 
 echo [4/9] PROJECT stage and commit release changelog
 
-REM 5. Run PROJECT stage on stage branch.
-
-REM sql26 -name dev
-REM PROJECT stage -verbose
 sql26 -name dev @src/scripts/during/next_cycle_project_stage.sql || goto :fail
 
 git log --oneline --decorate --graph -n 10
@@ -262,18 +213,6 @@ REM git commit -m "PROJECT stage for 1.2"
 
 REM again remove stage branch
 REM move to main
-
-	REM Stage is Comparing:
-	REM Old Branch      refs/heads/main
-	REM New Branch      refs/heads/stage/1.4
-	REM 
-	REM Created file:  dist\releases\next\changes\stage\1.4\pis_storitve_pos\tables\tmp_test2056.sql
-	REM Created change:dist\releases\next\changes\stage\1.4\stage.changelog.xml
-	REM Created change:dist\releases\next\release.changelog.xml
-	REM Updated change:dist\releases\main.changelog.xml
-	REM Updated change:dist\releases\next\release.changelog.xml
-	REM Updated change:dist\releases\next\changes\stage\1.4\stage.changelog.xml
-	REM Sorted and Saved file:  dist\releases\next\changes\stage\1.4\stage.changelog.xml
 
 
 REM mkdir C:\Install\Db\PISAPILQ2050\dist\releases\next
@@ -316,18 +255,12 @@ REM git diff --name-status
 REM presence of dist/releases/next/ or new dist/releases/1.1/ content
 REM Only after staged files appear, 
 
-REM 6. Review/commit stage outputs.
 
-REM git add -A
-git add .
-git commit -m "Prepare release changelog %VERSION%"
+
 
 echo ==========================================================
 echo RELEASE, GEN ARTIFACT
 echo ==========================================================
-
-REM 7. Run PROJECT release
-
 
 echo [5/9] PROJECT release and artifact generation
 
@@ -335,12 +268,6 @@ sql26 -name dev @src/scripts/during/next_cycle_project_release.sql %VERSION% || 
 
 REM Powershell
 REM sql26 -name dev @src/scripts/during/next_cycle_project_release.sql $VERSION
-
-REM sql26 -name dev
-REM PROJECT release -version 1.4
-REM PROJECT gen-artifact
-
-REM 8. Merge stage into main.
 
 echo [6/9] Freeze release in git
 
@@ -365,22 +292,7 @@ git checkout main
 
 git merge --no-ff %STAGE_BRANCH% -m "Merge %STAGE_BRANCH% to main"
 
-	REM Merge made by the 'ort' strategy.
-	REM  .../stage/1.4/pis_storitve_pos/tables/tmp_test2054.sql       |  9 +++++++++
-	REM  .../stage/1.4/pis_storitve_pos/tables/tmp_test2056.sql       | 12 ++++++++++++
-	REM  dist/releases/1.4/changes/stage/1.4/stage.changelog.xml      |  8 ++++++++
-	REM  dist/releases/1.4/release.changelog.xml                      |  8 ++++++++
-	REM  dist/releases/main.changelog.xml                             |  3 ++-
-	REM  src/database/pis_storitve_pos/tables/tmp_test2054.sql        |  5 +++--
-	REM  src/database/pis_storitve_pos/tables/tmp_test2056.sql        | 10 ++++++++++
-	REM  7 files changed, 52 insertions(+), 3 deletions(-)
-	REM  create mode 100644 dist/releases/1.4/changes/stage/1.4/pis_storitve_pos/tables/tmp_test2054.sql
-	REM  create mode 100644 dist/releases/1.4/changes/stage/1.4/pis_storitve_pos/tables/tmp_test2056.sql
-	REM  create mode 100644 dist/releases/1.4/changes/stage/1.4/stage.changelog.xml
-	REM  create mode 100644 dist/releases/1.4/release.changelog.xml
-	REM  create mode 100644 src/database/pis_storitve_pos/tables/tmp_test2056.sql
-
-REM 9. Tag and push
+REM TAG and push
 git tag v%VERSION%
 git push -u origin main stage/%VERSION% --tags
 
@@ -517,25 +429,5 @@ echo ERROR: command failed with exit code %ERRORLEVEL%.
 echo Stop point kept for investigation.
 exit /b %ERRORLEVEL%
 
-REM On prod. missing part
-REM create table pis_storitve_pos.tmp_test2054 as select * from pis_storitve_pos.tmp_test2053;
-REM alter table pis_storitve_pos.tmp_test2054 add AGE NUMBER;
-REM create table pis_storitve_pos.tmp_test2055 as select * from pis_storitve_pos.tmp_test2054;
 
 REM sql26 -name prod @src/scripts/during/next_cycle_project_deploy.sql %VERSION%
-
-
-REM REM sql26 -name prod @src/scripts/during/prod_validate.sql
-
-REM   sql26 -name prod
-REM   desc pis_storitve_pos.tmp_test2054 -- ne obstaja tabela, prièakuje se s poljem AGE
-REM     expecting AGE, NEWAGE
-REM   desc pis_storitve_pos.tmp_test2055 -- ne obstaja
-REM   desc pis_storitve_pos.tmp_test2056 
-
-
-REM   sql26 -name prod
-REM   alter table pis_storitve_pos.tmp_test2054 add NASLOV VARCHAR2(200);
-REM   alter table pis_storitve_pos.tmp_test2054 add NASELJE VARCHAR2(200);
-REM   create table pis_storitve_pos.tmp_test2057 as select * from pis_storitve_pos.tmp_test2056;
-
