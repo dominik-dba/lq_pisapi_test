@@ -1,7 +1,7 @@
 REM USAGE: cycle.cmd 1.1 cycle
 REM Incremental SQLcl Project cycle (no LB diff/update-sql path)
 
-REM SET VERSION=1.2
+REM SET VERSION=1.3
 REM SET TICKET=cycle
 REM SET ROOT=C:\Install\Db\PISAPILQ205
 

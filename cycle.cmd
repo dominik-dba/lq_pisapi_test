@@ -363,6 +363,13 @@ echo   sql26 -name prod @src/scripts/during/next_cycle_project_deploy.sql %VERSI
 REM Powershel
 REM echo   sql26 -name prod @src/scripts/during/next_cycle_project_deploy.sql $VERSION
 
+
+REM Powershel
+REM git add .
+REM git commit -m "NC2"
+REM git merge --no-ff $STAGE_BRANCH -m "Merge $STAGE_BRANCH to main" 
+REM ECHO Already up to date.
+
 echo No LB diff/update-sql path is used in this incremental cycle script.
 echo Review branch state and push when ready:
 if defined REMOTE_NAME (
