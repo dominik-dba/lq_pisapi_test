@@ -48,5 +48,5 @@
     "softObjectIsolation" : "change",
     "substituteSchemas" : false
   },
-  "lastReleaseVersion" : "%VERSION%"
+  "lastReleaseVersion" : "1.3"
 }
