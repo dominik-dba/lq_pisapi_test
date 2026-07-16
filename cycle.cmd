@@ -1,9 +1,28 @@
+
+
+
+REM Correct order for your process:
+REM 
+REM 1. Create feature from main.
+REM 2. Do DB changes + PROJECT export on feature.
+REM 3. Commit feature.
+REM 4. Create stage branch from feature (or move feature commits onto stage).
+REM 5. Run PROJECT stage on stage branch.
+REM 6. Review/commit stage outputs.
+REM 7. Run PROJECT release -version 1.3.
+REM 8. Merge stage into main.
+REM 9. Tag and push
+
+REM    create table pis_storitve_pos.tmp_test2058 as select * from pis_storitve_pos.tmp_test2056;
+
+
+
 REM USAGE: cycle.cmd 1.1 cycle
 REM Incremental SQLcl Project cycle (no LB diff/update-sql path)
 
 REM SET VERSION=1.2
 REM SET TICKET=cycle
-REM SET ROOT=C:\Install\Db\PISAPILQ205
+REM SET ROOT=C:\Install\Db\PISAPILQ2050
 
 set REF_URL=jdbc:oracle:thin:@pngodb.src.si:1521/pngordn
 set REF_USER=PIS_STORITVE_POS
@@ -11,25 +30,11 @@ set REF_PASS=PIS_STORITVE_POS
 set TGT_URL=jdbc:oracle:thin:@ora26ai.src.si:1521/orclpdb
 set TGT_USER=PIS_STORITVE_POS
 set TGT_PASS=PIS_STORITVE_POS
-
-SET LD_LIBRARY_PATH=C:\Oracle\product\instantclient_23_26;C:\Oracle\product\instantclient_23_26
-
-REM Powershell
-REM $env:LD_LIBRARY_PATH = "C:\Oracle\product\instantclient_23_26;C:\Oracle\product\instantclient_23_26"
-
-git add .
-git commit -m "NC"
-
-REM Powershell
-REM git rev-parse --is-inside-work-tree
-REM true
-
-
 SET LIQUIBASE_HOME=C:\Ant\liquibase\
+SET LD_LIBRARY_PATH=C:\Oracle\product\instantclient_23_26;C:\Oracle\product\instantclient_23_26
 
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
-
 
 set "ROOT=%~dp0"
 REM Powershell
@@ -43,9 +48,6 @@ if "%VERSION%"=="" set "VERSION=1.1"
 set "TICKET=%~2"
 if "%TICKET%"=="" set "TICKET=cycle"
 
-REM SET VERSION=1.2
-REM SET TICKET=cycle
-
 set "FEATURE_BRANCH=feature/PISAPI-%VERSION%-%TICKET%"
 set "STAGE_BRANCH=stage/%VERSION%"
 set "RELEASE_TAG=v%VERSION%"
@@ -54,11 +56,23 @@ set "REMOTE_NAME="
 set "LB_DIFF_FILE=lb_diff_%VERSION%.xml"
 set "LB_DIFF_SQL=lb_diff_%VERSION%.sql"
 
+	
+REM Powershell
+REM $env:LD_LIBRARY_PATH = "C:\Oracle\product\instantclient_23_26;C:\Oracle\product\instantclient_23_26"
+
+git checkout main
+git add .
+git commit -m "NC"
+git push
+cd /d "%ROOT%"
+
+REM Powershell
+REM git rev-parse --is-inside-work-tree
+REM true
+
+
 REM Powershell
 REM cmd /v:on /c "set TICKET=cycle&&set VERSION=1.2&&set STAGE_BRANCH=stage/!VERSION!&&set RELEASE_TAG=v!VERSION!&&set ARTIFACT=artifact\PISAPI-!VERSION!.zip&&set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!"&&set "LB_DIFF_FILE=lb_diff_!VERSION!.xml"&&set "LB_DIFF_SQL=lb_diff_!VERSION!.sql"
-
-
-
 
 
 call :preflight || goto :fail
@@ -80,9 +94,7 @@ REM git commit -m "WIP before cycle run"
 
 echo [1/9] Create feature branch from main
 git push
-git checkout main || goto :fail
-
-
+REM git checkout main || goto :fail
 
 call :pull_main || goto :fail
 REM Powershell
@@ -90,8 +102,6 @@ REM $REMOTE_NAME = "origin"
 REM git ls-remote --exit-code --heads $REMOTE_NAME main
 REM git rev-parse --abbrev-ref --symbolic-full-name '@{u}'
 REM git pull
-
-
 
 git checkout -b %FEATURE_BRANCH% || goto :fail
 REM Powershell
@@ -148,17 +158,18 @@ REM set "RELEASE_TAG=v%VERSION%"
 REM set "ARTIFACT=artifact\PISAPI-%VERSION%.zip"
 
 
+REM 3. Commit feature.
 
 
 echo [3/9] Commit feature changes and merge to main
 git add .
 git commit -m "Feature %TICKET%: export project changes"
-git checkout main || goto :fail
+REM git checkout main || goto :fail
 
 REM Powershell
 REM $FEATURE_BRANCH = "feature/PISAPI-1.2-2053"
 REM git merge --no-ff $FEATURE_BRANCH -m "Merge $FEATURE_BRANCH to main"
-git merge --no-ff %FEATURE_BRANCH% -m "Merge %FEATURE_BRANCH% to main" || goto :fail
+REM git merge --no-ff %FEATURE_BRANCH% -m "Merge %FEATURE_BRANCH% to main" || goto :fail
 
 git checkout -b %STAGE_BRANCH% || goto :fail
 
@@ -175,67 +186,9 @@ echo [4/9] PROJECT stage and commit release changelog
 
 sql26 -name dev @src/scripts/during/next_cycle_project_stage.sql || goto :fail
 
-REM SQL> PROJECT stage -verbose
-REM The current connection SYSTEM will be used for all operations
-REM 
-REM Starting execution of stage command using the current branch
-REM 
-REM Stage is Comparing:
-REM Old Branch      refs/heads/main
-REM New Branch      refs/heads/%STAGE_BRANCH%
-REM 
-REM 
-REM Completed executing stage command on branch: %STAGE_BRANCH%
-REM 
-REM Stage processing completed, please review and commit your changes to repository
-REM 
-REM Changes not staged for commit
-REM         modified: src/scripts/during/next_cycle_project_stage.sql
-REM 
-REM  Untracked files:
-REM         artifact
-REM         src/lb
-REM         lb-project
-REM         src/scripts/after
-REM         src/scripts/before
-REM SQL> 
-REM SQL> git add -A
-REM Warning: Alias with binds: too many binds supplied at run time.
-REM SQL> !git add -A
-REM warning: in the working copy of 'dist/env/default.properties', LF will be replaced by CRLF the next time Git touches it
-REM 
-REM SQL> !git commit -m "Prepare release changelog 1.1"
-REM [%STAGE_BRANCH% 1b2fd3d] Prepare release changelog 1.1
-REM  1 file changed, 2 insertions(+), 1 deletion(-)
+git log --oneline --decorate --graph -n 10
 
-REM LATEST RESULT vi VSCode Powershell
-
-REM SQL> PROJECT stage -verbose
-REM The current connection SYSTEM will be used for all operations
-REM 
-REM Starting execution of stage command using the current branch
-REM 
-REM Stage is Comparing:
-REM Old Branch      refs/heads/main
-REM New Branch      refs/heads/stage/1.2
-REM 
-REM 
-REM Completed executing stage command on branch: stage/1.2
-REM 
-REM Stage processing completed, please review and commit your changes to repository
-REM 
-REM Changes not staged for commit
-REM         modified: cycle.cmd
-REM 
-REM  Untracked files:
-REM         artifact
-REM         src/lb
-REM         lb-project
-REM         src/scripts/after
-REM         src/scripts/before
-
-
-git add -A
+REM git add -A
 git add .
 git commit -m "Prepare release changelog %VERSION%"
 
@@ -262,7 +215,7 @@ REM again remove stage branch
 REM move to main
 
 
-mkdir C:\Install\Db\PISAPILQ2050\dist\releases\next
+REM mkdir C:\Install\Db\PISAPILQ2050\dist\releases\next
 
 REM 53 je nova, dropajo se preko C:\Install\Db\PISAPILQ2050\dist\releases\next\release.changelog.xml
 REM C:\Install\Db\PISAPILQ2050\dist\releases\next\pis_storitve_pos\tables\drop_old_table.sql
@@ -302,13 +255,14 @@ REM git diff --name-status
 REM presence of dist/releases/next/ or new dist/releases/1.1/ content
 REM Only after staged files appear, 
 
+
+
+
 echo ==========================================================
 echo RELEASE, GEN ARTIFACT
 echo ==========================================================
 
 echo [5/9] PROJECT release and artifact generation
-
-mkdir 
 
 sql26 -name dev @src/scripts/during/next_cycle_project_release.sql %VERSION% || goto :fail
 
@@ -316,23 +270,35 @@ REM Powershell
 REM sql26 -name dev @src/scripts/during/next_cycle_project_release.sql $VERSION
 
 echo [6/9] Freeze release in git
-git add .
+
+git restore .dbtools/project.config.json
+git add -A dist/releases
 git commit -m "Release %VERSION%"
+git status
+git diff --name-status
 
 REM Powershell
 REM git add .
 REM git commit -m "Release $VERSION"
 
 
-git add dist/ artifact/
+REM git add dist/ artifact/
 git commit -m "Freeze release %VERSION% baseline"
 
 REM Powershell
 REM git commit -m "Freeze release $VERSION baseline"
 
+git checkout main
+
+git merge --no-ff %STAGE_BRANCH% -m "Merge %STAGE_BRANCH% to main"
+
+REM TAG and push
+git tag v%VERSION%
+git push -u origin main stage/%VERSION% --tags
 
 
-git tag %RELEASE_TAG%
+
+REM REM git tag %RELEASE_TAG%
 REM Powershell
 REM git tag $RELEASE_TAG
 

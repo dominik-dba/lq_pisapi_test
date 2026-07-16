@@ -79,7 +79,7 @@ REM WRONG git checkout main
 REM WRONG git merge --no-ff %FEATURE_BRANCH% -m "Merge %FEATURE_BRANCH% to main"
 
 REM git checkout feature/PISAPI-%VERSION%-cycle
-git status
+REM git status
 REM Create stage from that exact feature tip:
 git checkout -b %STAGE_BRANCH% 
 REM Verify relation:
@@ -144,7 +144,7 @@ REM 8. Merge stage into main.
 
 git restore .dbtools/project.config.json
 git add -A dist/releases
-git commit -m "Release 1.4"
+git commit -m "Release %VERSION%"
 git status
 git diff --name-status
 
@@ -170,142 +170,11 @@ git merge --no-ff %STAGE_BRANCH% -m "Merge %STAGE_BRANCH% to main"
 
 
 REM 9. Tag and push
-git tag v1.4
-git push -u origin main stage/1.4 --tags
+git tag v%VERSION%
+git push -u origin main stage/%VERSION% --tags
 
 ***** 
 sql26 -name prod @src/scripts/during/next_cycle_project_deploy.sql %VERSION%
-
-
-
-SQL> lb update -log -log-path "C:\Install\Db\PISAPILQ2050" -changelog-file releases/main.changelog.xml -search-path "." -def env/default.properties
---Starting Liquibase at 2026-07-16T12:07:36.169975300 using Java 21.0.5 (version 4.33.0 #0 built at 2025-12-09 17:47+0000)
-Running Changeset: stage/1.4/pis_storitve_pos/tables/tmp_test2054.sql::1784195915370::PIS_STORITVE_POS
-Migration failed, error reported:
-The specified table or view did not exist
-
-No Rollback for formatted sql change type
-
-
-UPDATE SUMMARY
-Run:                          0
-Previously run:              60
-Filtered out:                 0
--------------------------------
-Total change sets:           62
-
-ERROR: Exception Details
-ERROR: Exception Primary Class:  DatabaseException
-ERROR: Exception Primary Reason:  Error occurred and continueonerror set to false, stopping execution.
-ERROR: Exception Primary Source:  4.33.0
-Please review automatically generated error log:
-sqlcl-lb-error1784196475979.log
-For additional information run using -debug and/or -log parameters.
-
-
-An error has occurred:
-liquibase.exception.CommandExecutionException: liquibase.exception.LiquibaseException: 
-liquibase.exception.MigrationFailedException: 
-Migration failed for changeset stage/1.4/pis_storitve_pos/tables/tmp_test2054.sql::1784195915370::PIS_STORITVE_POS:
-     Reason: liquibase.exception.DatabaseException: Error occurred and continueonerror set to false, 
-	 stopping execution.
-        at liquibase.command.CommandScope.lambda$execute$6(CommandScope.java:310)
-        at liquibase.Scope.child(Scope.java:225)
-        at liquibase.Scope.child(Scope.java:201)
-        at liquibase.command.CommandScope.execute(CommandScope.java:251)
-        at liquibase.Scope.child(Scope.java:225)
-        at liquibase.Scope.child(Scope.java:201)
-        at oracle.dbtools.raptor.liquibase.core.ActiveCommand.runCommand(ActiveCommand.java:439)
-        at oracle.dbtools.raptor.liquibase.core.CommandGenerator.updateCommand(CommandGenerator.java:292)
-        at oracle.dbtools.raptor.scriptrunner.commands.liquibase.LbCommand.handleEvent(LbCommand.java:355)
-        at oracle.dbtools.raptor.newscriptrunner.CommandRegistry.lambda$fireListeners$4(CommandRegistry.java:485)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptRunnerContext.runWithStoredContext(ScriptRunnerContext.java:839)
-        at oracle.dbtools.raptor.newscriptrunner.CommandRegistry.runWithStoredContext(CommandRegistry.java:705)
-        at oracle.dbtools.raptor.newscriptrunner.CommandRegistry.fireListeners(CommandRegistry.java:463)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptRunner.lambda$run$0(ScriptRunner.java:241)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptRunnerContext.runWithStoredContext(ScriptRunnerContext.java:839)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptRunner.run(ScriptRunner.java:124)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptExecutor.run(ScriptExecutor.java:364)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptExecutor.run(ScriptExecutor.java:245)
-        at oracle.dbtools.raptor.newscriptrunner.SQLPLUS.runExecuteFile(SQLPLUS.java:1779)
-        at oracle.dbtools.raptor.newscriptrunner.SQLPLUS.run(SQLPLUS.java:186)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptRunner.runSQLPLUS(ScriptRunner.java:460)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptRunner.lambda$run$0(ScriptRunner.java:281)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptRunnerContext.runWithStoredContext(ScriptRunnerContext.java:839)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptRunner.run(ScriptRunner.java:124)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptExecutor.run(ScriptExecutor.java:364)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptExecutor.run(ScriptExecutor.java:245)
-        at oracle.dbtools.runner.SqlClCommandsRunner.run(SqlClCommandsRunner.java:62)
-        at oracle.dbtools.extension.project.commands.deploy.DeployCommand.deployArtifact(DeployCommand.java:192)
-        at oracle.dbtools.extension.project.commands.deploy.DeployCommand.run(DeployCommand.java:272)
-        at oracle.dbtools.extension.project.commands.handler.CommandHandler.DeployCommand(CommandHandler.java:149)
-        at oracle.dbtools.extension.project.commands.handler.ProjectCommand.handleEvent(ProjectCommand.java:100)
-        at oracle.dbtools.raptor.newscriptrunner.util.command.ParsedCommandListener.handleEvent(ParsedCommandListener.java:66)
-        at oracle.dbtools.raptor.newscriptrunner.CommandRegistry.lambda$fireListeners$4(CommandRegistry.java:485)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptRunnerContext.runWithStoredContext(ScriptRunnerContext.java:839)
-        at oracle.dbtools.raptor.newscriptrunner.CommandRegistry.runWithStoredContext(CommandRegistry.java:705)
-        at oracle.dbtools.raptor.newscriptrunner.CommandRegistry.fireListeners(CommandRegistry.java:463)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptRunner.lambda$run$0(ScriptRunner.java:241)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptRunnerContext.runWithStoredContext(ScriptRunnerContext.java:839)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptRunner.run(ScriptRunner.java:124)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptExecutor.run(ScriptExecutor.java:364)
-        at oracle.dbtools.raptor.newscriptrunner.ScriptExecutor.run(ScriptExecutor.java:245)
-        at oracle.dbtools.raptor.scriptrunner.cmdline.SqlCli.runFile(SqlCli.java:1532)
-        at oracle.dbtools.raptor.scriptrunner.cmdline.SqlCli.handleAtFiles(SqlCli.java:886)
-        at oracle.dbtools.raptor.scriptrunner.cmdline.SqlCli.initSqlcl(SqlCli.java:1413)
-        at oracle.dbtools.raptor.scriptrunner.cmdline.SqlCli.runSqlcl(SqlCli.java:1612)
-        at oracle.dbtools.raptor.scriptrunner.cmdline.SqlCli.main(SqlCli.java:363)
-Caused by: liquibase.exception.LiquibaseException: liquibase.exception.MigrationFailedException: Migration failed for changeset stage/1.4/pis_storitve_pos/tables/tmp_test2054.sql::1784195915370::PIS_STORITVE_POS:
-     Reason: liquibase.exception.DatabaseException: Error occurred and continueonerror set to false, stopping execution.
-        at liquibase.changelog.ChangeLogIterator.run(ChangeLogIterator.java:155)
-        at liquibase.command.core.AbstractUpdateCommandStep.lambda$run$0(AbstractUpdateCommandStep.java:114)
-        at liquibase.Scope.lambda$child$0(Scope.java:216)
-        at liquibase.Scope.child(Scope.java:225)
-        at liquibase.Scope.child(Scope.java:215)
-        at liquibase.Scope.child(Scope.java:194)
-        at liquibase.command.core.AbstractUpdateCommandStep.run(AbstractUpdateCommandStep.java:112)
-        at liquibase.command.core.UpdateCommandStep.run(UpdateCommandStep.java:100)
-        at liquibase.command.CommandScope.lambda$execute$6(CommandScope.java:263)
-        ... 45 more
-Caused by: liquibase.exception.MigrationFailedException: Migration failed for changeset stage/1.4/pis_storitve_pos/tables/tmp_test2054.sql::1784195915370::PIS_STORITVE_POS:
-     Reason: liquibase.exception.DatabaseException: Error occurred and continueonerror set to false, stopping execution.
-        at liquibase.changelog.ChangeSet.execute(ChangeSet.java:873)
-        at liquibase.changelog.visitor.UpdateVisitor.executeAcceptedChange(UpdateVisitor.java:127)
-        at liquibase.changelog.visitor.UpdateVisitor.visit(UpdateVisitor.java:71)
-        at liquibase.changelog.ChangeLogIterator.lambda$run$0(ChangeLogIterator.java:133)
-        at liquibase.Scope.lambda$child$0(Scope.java:216)
-        at liquibase.Scope.child(Scope.java:225)
-        at liquibase.Scope.child(Scope.java:215)
-        at liquibase.Scope.child(Scope.java:194)
-        at liquibase.changelog.ChangeLogIterator.lambda$run$1(ChangeLogIterator.java:122)
-        at liquibase.Scope.lambda$child$0(Scope.java:216)
-        at liquibase.Scope.child(Scope.java:225)
-        at liquibase.Scope.child(Scope.java:215)
-        at liquibase.Scope.child(Scope.java:194)
-        at liquibase.Scope.child(Scope.java:282)
-        at liquibase.Scope.child(Scope.java:286)
-        at liquibase.changelog.ChangeLogIterator.run(ChangeLogIterator.java:91)
-        ... 53 more
-Caused by: liquibase.exception.DatabaseException: Error occurred and continueonerror set to false, stopping execution.
-        at oracle.dbtools.raptor.liquibase.executor.jvm.SqlClExecutor.execute(SqlClExecutor.java:206)
-        at liquibase.executor.AbstractExecutor.execute(AbstractExecutor.java:148)
-        at oracle.dbtools.raptor.liquibase.executor.jvm.SqlClExecutor.execute(SqlClExecutor.java:318)
-        at liquibase.database.AbstractJdbcDatabase.executeStatements(AbstractJdbcDatabase.java:1198)
-        at liquibase.changelog.ChangeSet.execute(ChangeSet.java:816)
-        ... 68 more
-
-Error occurred and continueonerror set to false, stopping execution.
-SQL>
-SQL> -- @utils/recompile.sql
-
-Log file(s) location: C:\Install\Db\PISAPILQ2050
-Removing the decompressed artifact: C:\TEMP\07edcf0a-49c1-4635-a863-9934ccfaab962604200407925447526...
-SQL>
-SQL> exit
-Disconnected from Oracle AI Database 26ai Enterprise Edition Release 23.26.1.0.0 - Production
-Version 23.26.1.0.0
-
-
 
 REM On prod. missing part
 REM create table pis_storitve_pos.tmp_test2054 as select * from pis_storitve_pos.tmp_test2053;
@@ -406,7 +275,7 @@ Version 23.26.1.0.0
 
 
 
-sql26 -name prod @src/scripts/during/prod_validate.sql
+REM REM sql26 -name prod @src/scripts/during/prod_validate.sql
 
 REM   sql26 -name prod
 REM   desc pis_storitve_pos.tmp_test2054 -- ne obstaja tabela, pričakuje se s poljem AGE
@@ -415,4 +284,8 @@ REM   desc pis_storitve_pos.tmp_test2055 -- ne obstaja
 REM   desc pis_storitve_pos.tmp_test2056 
 
 
+
+REM   alter table pis_storitve_pos.tmp_test2054 add NASLOV VARCHAR2(200);
+REM   alter table pis_storitve_pos.tmp_test2054 add NASELJE VARCHAR2(200);
+REM   create table pis_storitve_pos.tmp_test2057 as select * from pis_storitve_pos.tmp_test2056;
 
