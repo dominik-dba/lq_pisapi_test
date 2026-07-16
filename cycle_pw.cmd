@@ -1,9 +1,6 @@
 REM USAGE: cycle.cmd 1.1 cycle
 REM Incremental SQLcl Project cycle (no LB diff/update-sql path)
 
-REM SET VERSION=1.3
-REM SET TICKET=cycle
-REM SET ROOT=C:\Install\Db\PISAPILQ205
 
 set REF_URL=jdbc:oracle:thin:@pngodb.src.si:1521/pngordn
 set REF_USER=PIS_STORITVE_POS
@@ -14,37 +11,20 @@ set TGT_PASS=PIS_STORITVE_POS
 
 SET LD_LIBRARY_PATH=C:\Oracle\product\instantclient_23_26;C:\Oracle\product\instantclient_23_26
 
-REM Powershell
-REM $env:LD_LIBRARY_PATH = "C:\Oracle\product\instantclient_23_26;C:\Oracle\product\instantclient_23_26"
-
 git add .
 git commit -m "NC"
-
-REM Powershell
-REM git rev-parse --is-inside-work-tree
-REM true
-
+git push
 
 SET LIQUIBASE_HOME=C:\Ant\liquibase\
 
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
-
-set "ROOT=%~dp0"
-REM Powershell
-REM $env:ROOT = "C:\Install\Db\PISAPILQ2050"
+SET VERSION=1.3
+SET TICKET=cycle
+SET ROOT=C:\Install\Db\PISAPILQ205
 
 cd /d "%ROOT%"
-
-set "VERSION=%~1"
-if "%VERSION%"=="" set "VERSION=1.1"
-
-set "TICKET=%~2"
-if "%TICKET%"=="" set "TICKET=cycle"
-
-REM SET VERSION=1.2
-REM SET TICKET=cycle
 
 set "FEATURE_BRANCH=feature/PISAPI-%VERSION%-%TICKET%"
 set "STAGE_BRANCH=stage/%VERSION%"
@@ -57,11 +37,7 @@ set "LB_DIFF_SQL=lb_diff_%VERSION%.sql"
 REM Powershell
 REM cmd /v:on /c "set TICKET=cycle&&set VERSION=1.2&&set STAGE_BRANCH=stage/!VERSION!&&set RELEASE_TAG=v!VERSION!&&set ARTIFACT=artifact\PISAPI-!VERSION!.zip&&set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!"&&set "LB_DIFF_FILE=lb_diff_!VERSION!.xml"&&set "LB_DIFF_SQL=lb_diff_!VERSION!.sql"
 
-
-
-
-
-call :preflight || goto :fail
+git rev-parse --is-inside-work-tree
 
 REM Powershell
 REM git rev-parse --is-inside-work-tree
@@ -80,7 +56,7 @@ REM git commit -m "WIP before cycle run"
 
 echo [1/9] Create feature branch from main
 git push
-git checkout main || goto :fail
+git checkout main
 
 
 
