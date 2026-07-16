@@ -54,7 +54,7 @@ set "RELEASE_TAG=v%VERSION%"
 set "ARTIFACT=artifact\PISAPI-%VERSION%.zip"
 set "REMOTE_NAME="
 set "LB_DIFF_FILE=lb_diff_%VERSION%.xml"
-set "LB_DIFF_SQL=lb_diff_%VERSION%.sql" 
+set "LB_DIFF_SQL=lb_diff_%VERSION%.sql"
 set REMOTE_NAME=origin
 
 REM Check .dbtools\project.config.json
@@ -528,7 +528,7 @@ REM sql26 -name prod @src/scripts/during/next_cycle_project_deploy.sql %VERSION%
 REM REM sql26 -name prod @src/scripts/during/prod_validate.sql
 
 REM   sql26 -name prod
-REM   desc pis_storitve_pos.tmp_test2054 -- ne obstaja tabela, priƒçakuje se s poljem AGE
+REM   desc pis_storitve_pos.tmp_test2054 -- ne obstaja tabela, priËakuje se s poljem AGE
 REM     expecting AGE, NEWAGE
 REM   desc pis_storitve_pos.tmp_test2055 -- ne obstaja
 REM   desc pis_storitve_pos.tmp_test2056 
@@ -538,4 +538,5 @@ REM   sql26 -name prod
 REM   alter table pis_storitve_pos.tmp_test2054 add NASLOV VARCHAR2(200);
 REM   alter table pis_storitve_pos.tmp_test2054 add NASELJE VARCHAR2(200);
 REM   create table pis_storitve_pos.tmp_test2057 as select * from pis_storitve_pos.tmp_test2056;
+
 
