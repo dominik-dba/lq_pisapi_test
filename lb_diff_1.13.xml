@@ -1,0 +1,140 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="DominikLebar (generated)" id="1784276798391-26">
+        <createTable tableName="TMP_TEST2065">
+            <column name="ID" type="NUMBER"/>
+            <column name="IME" type="VARCHAR2(200 CHAR)"/>
+            <column name="PRIIMEK" type="VARCHAR2(200 CHAR)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-27">
+        <dropTable tableName="TMP_TEST2053"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-28">
+        <dropTable tableName="TMP_TEST2054"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-29">
+        <dropTable tableName="TMP_TEST2055"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-30">
+        <dropTable tableName="TMP_TEST2056"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-31">
+        <dropTable tableName="TMP_TEST2057"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-32">
+        <dropTable tableName="TMP_TEST2058"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-33">
+        <dropTable tableName="TMP_TEST2059"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-34">
+        <dropTable tableName="TMP_TEST2060"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-35">
+        <dropTable tableName="TMP_TEST2061"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-36">
+        <dropTable tableName="TMP_TEST2062"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-37">
+        <dropTable tableName="TMP_TEST2063"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-38">
+        <dropTable tableName="TMP_TEST2064"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-1">
+        <addDefaultValue columnDataType="number(18,0)" columnName="TASK_ID" defaultValueComputed="&quot;PIS_STORITVE_POS&quot;.&quot;TASK_SEQ&quot;.&quot;NEXTVAL&quot;" tableName="TASK"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-2">
+        <dropIndex indexName="IDX_CALLBACK_POS_ZAHTEVA" tableName="CALLBACK_POSILJANJE"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-3">
+        <createIndex indexName="IDX_CALLBACK_POS_ZAHTEVA" tableName="CALLBACK_POSILJANJE" unique="false">
+            <column name="ZAHTEVA_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-4">
+        <dropIndex indexName="IDX_PREVZEM_ZAHTEVA" tableName="PREVZEM"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-5">
+        <createIndex indexName="IDX_PREVZEM_ZAHTEVA" tableName="PREVZEM" unique="false">
+            <column name="ZAHTEVA_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-6">
+        <dropPrimaryKey tableName="CALLBACK_POSILJANJE"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-7">
+        <createIndex indexName="PK_CALLBACK_POSILJANJE" tableName="CALLBACK_POSILJANJE" unique="true">
+            <column name="ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-8">
+        <addPrimaryKey columnNames="ID" constraintName="PK_CALLBACK_POSILJANJE" forIndexName="PK_CALLBACK_POSILJANJE" tableName="CALLBACK_POSILJANJE"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-9">
+        <dropPrimaryKey tableName="NAPAKA_ODGOVORA"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-10">
+        <createIndex indexName="PK_NAPAKA" tableName="NAPAKA_ODGOVORA" unique="true">
+            <column name="ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-11">
+        <addPrimaryKey columnNames="ID" constraintName="PK_NAPAKA" forIndexName="PK_NAPAKA" tableName="NAPAKA_ODGOVORA"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-12">
+        <dropPrimaryKey tableName="PRAVICA"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-13">
+        <createIndex indexName="PK_PRAVICA" tableName="PRAVICA" unique="true">
+            <column name="ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-14">
+        <addPrimaryKey columnNames="ID" constraintName="PK_PRAVICA" forIndexName="PK_PRAVICA" tableName="PRAVICA"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-15">
+        <dropPrimaryKey tableName="PREVZEM"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-16">
+        <createIndex indexName="PK_PREVZEM" tableName="PREVZEM" unique="true">
+            <column name="ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-17">
+        <addPrimaryKey columnNames="ID" constraintName="PK_PREVZEM" forIndexName="PK_PREVZEM" tableName="PREVZEM"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-18">
+        <dropPrimaryKey tableName="TASK"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-19">
+        <createIndex indexName="PK_TASK" tableName="TASK" unique="true">
+            <column defaultValueComputed="&quot;PIS_STORITVE_POS&quot;.&quot;TASK_SEQ&quot;.&quot;NEXTVAL&quot;" name="TASK_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-20">
+        <addPrimaryKey columnNames="TASK_ID" constraintName="PK_TASK" forIndexName="PK_TASK" tableName="TASK"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-21">
+        <dropUniqueConstraint constraintName="SYS_C00585339" tableName="ZAHTEVA"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-22">
+        <createIndex indexName="SYS_C00585339" tableName="ZAHTEVA" unique="true">
+            <column name="PUBLIC_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-23">
+        <addUniqueConstraint columnNames="PUBLIC_ID" constraintName="SYS_C00585339" forIndexName="SYS_C00585339" tableName="ZAHTEVA"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-24">
+        <dropIndex indexName="TASK_UQ" tableName="TASK"/>
+    </changeSet>
+    <changeSet author="DominikLebar (generated)" id="1784276798391-25">
+        <createIndex indexName="TASK_UQ" tableName="TASK" unique="true">
+            <column computed="true" name="CASE &quot;UNIQUE_FLAG&quot; WHEN 0 THEN NULL ELSE &quot;CONTEXT&quot; END"/>
+            <column computed="true" name="CASE &quot;UNIQUE_FLAG&quot; WHEN 0 THEN NULL ELSE NVL(&quot;CONTEXT_ID&quot;,'') END"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
