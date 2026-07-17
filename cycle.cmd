@@ -230,7 +230,7 @@ rem set "LB_DIFF_SQL=lb_diff_%VERSION%.sql"
 rem 
 rem cd /d "%ROOT%"
 
-sql26 -name prod @src/scripts/during/next_cycle_lb_change_log.sql %LB_DIFF_FILE% %REF_URL% %REF_USER% %REF_PASS% PIS_STORITVE_POS
+sql26 -name prod @src/scripts/during/next_cycle_lb_change_log.sql %LB_DIFF_FILE% %REF_URL% %REF_USER% %REF_PASS% PIS_STORITVE_POS LB_CHANGES
 
 sql26 -name prod @src/scripts/during/next_cycle_lb_update.sql %LB_DIFF_FILE% LB_CHANGES PIS_STORITVE_POS PIS_STORITVE_POS %LB_DIFF_SQL%
 
