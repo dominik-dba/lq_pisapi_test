@@ -230,38 +230,45 @@ rem set "LB_DIFF_SQL=lb_diff_%VERSION%.sql"
 rem 
 rem cd /d "%ROOT%"
 
-liquibase ^
- --url=%TGT_URL% ^
- --username=%TGT_USER% ^
- --password=%TGT_PASS% ^
- --reference-url=%REF_URL% ^
- --reference-username=%REF_USER% ^
- --reference-password=%REF_PASS% ^
- --default-schema-name=PIS_STORITVE_POS ^
- --diff-types=columns,foreignkeys,indexes,primarykeys,tables,sequences,uniqueconstraints,views ^
- --include-schema=false ^
- --include-tablespace=false ^
- --output-default-schema=false ^
- diff-changelog ^
- --changelog-file=%LB_DIFF_FILE%
+sql26 -name prod @src/scripts/during/next_cycle_lb_change_log.sql %LB_DIFF_FILE% %REF_URL% %REF_USER% %REF_PASS% PIS_STORITVE_POS
 
-liquibase ^
- --database-changelog-table-name=LB_CHANGES ^
- --default-schema-name=PIS_STORITVE_POS ^
- --liquibase-schema-name=PIS_STORITVE_POS ^
- --url=%TGT_URL% ^
- --username=%TGT_USER% ^
- --password=%TGT_PASS% ^
- --changelog-file=%LB_DIFF_FILE% ^
- --output-default-schema=false ^
- update-sql ^
- --output-file=%LB_DIFF_SQL%
+sql26 -name prod @src/scripts/during/next_cycle_lb_update.sql %LB_DIFF_FILE% LB_CHANGES PIS_STORITVE_POS PIS_STORITVE_POS %LB_DIFF_SQL%
+
+
+REM liquibase ^
+REM  --url=%TGT_URL% ^
+REM  --username=%TGT_USER% ^
+REM  --password=%TGT_PASS% ^
+REM  --reference-url=%REF_URL% ^
+REM  --reference-username=%REF_USER% ^
+REM  --reference-password=%REF_PASS% ^
+REM  --default-schema-name=PIS_STORITVE_POS ^
+REM  --diff-types=columns,foreignkeys,indexes,primarykeys,tables,sequences,uniqueconstraints,views ^
+REM  --include-schema=false ^
+REM  --include-tablespace=false ^
+REM  --output-default-schema=false ^
+REM  diff-changelog ^
+REM  --changelog-file=%LB_DIFF_FILE%
+REM 
+REM 
+REM liquibase ^
+REM  --database-changelog-table-name=LB_CHANGES ^
+REM  --default-schema-name=PIS_STORITVE_POS ^
+REM  --liquibase-schema-name=PIS_STORITVE_POS ^
+REM  --url=%TGT_URL% ^
+REM  --username=%TGT_USER% ^
+REM  --password=%TGT_PASS% ^
+REM  --changelog-file=%LB_DIFF_FILE% ^
+REM  --output-default-schema=false ^
+REM  update-sql ^
+REM  --output-file=%LB_DIFF_SQL%
 
 
 git add lb_diff_%VERSION%.xml 
 git add lb_diff_%VERSION%.sql
 
 git commit -m "LB diff and update-sql for %VERSION%"
+git push
 
 echo SUCCESS: next cycle flow completed.
 goto :eof
