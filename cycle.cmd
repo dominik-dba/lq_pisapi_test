@@ -204,6 +204,40 @@ if defined REMOTE_NAME (
 	echo   git push -u ^<your-remote^> main %STAGE_BRANCH% --tags
 )
 echo.
+
+liquibase ^
+ --url=%TGT_URL% ^
+ --username=%TGT_USER% ^
+ --password=%TGT_PASS% ^
+ --reference-url=%REF_URL% ^
+ --reference-username=%REF_USER% ^
+ --reference-password=%REF_PASS% ^
+ --default-schema-name=PIS_STORITVE_POS ^
+ --diff-types=columns,foreignkeys,indexes,primarykeys,tables,sequences,uniqueconstraints,views ^
+ --include-schema=false ^
+ --include-tablespace=false ^
+ --output-default-schema=false ^
+ diff-changelog ^
+ --changelog-file=%LB_DIFF_FILE%
+
+liquibase ^
+ --database-changelog-table-name=LB_CHANGES ^
+ --default-schema-name=PIS_STORITVE_POS ^
+ --liquibase-schema-name=PIS_STORITVE_POS ^
+ --url=%TGT_URL% ^
+ --username=%TGT_USER% ^
+ --password=%TGT_PASS% ^
+ --changelog-file=%LB_DIFF_FILE% ^
+ --output-default-schema=false ^
+ update-sql ^
+ --output-file=%LB_DIFF_SQL%
+
+
+git add lb_diff_%VERSION%.xml 
+git add lb_diff_%VERSION%.sql
+
+git commit -m "LB diff and update-sql for %VERSION%"
+
 echo SUCCESS: next cycle flow completed.
 goto :eof
 
