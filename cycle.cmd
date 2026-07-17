@@ -205,6 +205,31 @@ if defined REMOTE_NAME (
 )
 echo.
 
+
+rem set REF_URL=jdbc:oracle:thin:@pngodb.src.si:1521/pngordn
+rem set REF_USER=PIS_STORITVE_POS
+rem set REF_PASS=PIS_STORITVE_POS
+rem set TGT_URL=jdbc:oracle:thin:@ora26ai.src.si:1521/orclpdb
+rem set TGT_USER=PIS_STORITVE_POS
+rem set TGT_PASS=PIS_STORITVE_POS
+rem SET LIQUIBASE_HOME=C:\Ant\liquibase\
+rem SET LD_LIBRARY_PATH=C:\Oracle\product\instantclient_23_26;C:\Oracle\product\instantclient_23_26
+rem setlocal EnableExtensions EnableDelayedExpansion
+rem set ROOT=C:\Install\Db\PISAPILQ2050
+rem 
+rem set "VERSION=1.13"
+rem set "TICKET=cycle"
+rem 
+rem set "FEATURE_BRANCH=feature/PISAPI-%VERSION%-%TICKET%"
+rem set "STAGE_BRANCH=stage/%VERSION%"
+rem set "RELEASE_TAG=v%VERSION%"
+rem set "ARTIFACT=artifact\PISAPI-%VERSION%.zip"
+rem set "REMOTE_NAME="
+rem set "LB_DIFF_FILE=lb_diff_%VERSION%.xml"
+rem set "LB_DIFF_SQL=lb_diff_%VERSION%.sql"
+rem 
+rem cd /d "%ROOT%"
+
 liquibase ^
  --url=%TGT_URL% ^
  --username=%TGT_USER% ^
