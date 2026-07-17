@@ -66,10 +66,6 @@ call :pull_main || goto :fail
 
 git checkout -b %FEATURE_BRANCH% || goto :fail
 
-echo.
-echo Apply your schema/object changes in DEV now.
-pause
-
 echo ==========================================================
 echo EXPORT
 echo ==========================================================
