@@ -177,7 +177,7 @@ try {
     Invoke-External -File git -Args @('status')
     Invoke-External -File git -Args @('diff', '--name-status')
 
-    Invoke-External -File git -Args @('commit', '-m', '"Freeze release $Version baseline"')
+    Invoke-External -File git -Args @('commit', '-m', "Freeze")
 
     Invoke-External -File git -Args @('checkout', 'main')
     Invoke-External -File git -Args @('merge', '--no-ff', $stageBranch, '-m', "Merge $stageBranch to main")
