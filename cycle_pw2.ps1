@@ -112,12 +112,6 @@ try {
 
     Set-Location -Path $root
 
-    Invoke-External -File git -Args @('checkout', 'main')
-    Invoke-External -File git -Args @('merge', '--no-ff', $stageBranch, '-m', "Merge $stageBranch to main")
-
-    Invoke-External -File git -Args @('tag', $releaseTag)
-    Invoke-External -File git -Args @('push', '-u', 'origin', 'main', "stage/$Version", '--tags')
-
     Write-Host '[7/9] Optional incremental deploy to PROD (no reset)'
     Write-Host 'If PROD already has previous version, this deploy applies only new changesets.'
     [void](Read-Host 'Press Enter to continue')
