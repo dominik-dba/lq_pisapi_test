@@ -32,15 +32,14 @@ set TGT_USER=PIS_STORITVE_POS
 set TGT_PASS=PIS_STORITVE_POS
 SET LIQUIBASE_HOME=C:\Ant\liquibase\
 SET LD_LIBRARY_PATH=C:\Oracle\product\instantclient_23_26;C:\Oracle\product\instantclient_23_26
-REM Powershell
 REM $env:LD_LIBRARY_PATH = "C:\Oracle\product\instantclient_23_26;C:\Oracle\product\instantclient_23_26"
 
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
-set "ROOT=%~dp0"
+REM set "ROOT=%~dp0"
 REM Powershell
-REM $env:ROOT = "C:\Install\Db\PISAPILQ2050"
+$env:ROOT = "C:\Install\Db\PISAPILQ2050"
 
 cd /d "%ROOT%"
 
@@ -58,27 +57,12 @@ set "REMOTE_NAME="
 set "LB_DIFF_FILE=lb_diff_%VERSION%.xml"
 set "LB_DIFF_SQL=lb_diff_%VERSION%.sql"
 
-	
-
 git checkout main
 git add .
 git commit -m "NC"
 git push
-cd /d "%ROOT%"
 
-REM Powershell
-REM git rev-parse --is-inside-work-tree
-REM true
-
-
-REM Powershell
-REM cmd /v:on /c "set TICKET=cycle&&set VERSION=1.2&&set STAGE_BRANCH=stage/!VERSION!&&set RELEASE_TAG=v!VERSION!&&set ARTIFACT=artifact\PISAPI-!VERSION!.zip&&set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!"&&set "LB_DIFF_FILE=lb_diff_!VERSION!.xml"&&set "LB_DIFF_SQL=lb_diff_!VERSION!.sql"
-
-
-call :preflight || goto :fail
-
-REM Powershell
-REM git rev-parse --is-inside-work-tree
+git rev-parse --is-inside-work-tree
 
 echo ==========================================================
 echo NEXT CYCLE RUNBOOK - VERSION %VERSION%
@@ -94,33 +78,33 @@ REM git commit -m "WIP before cycle run"
 
 echo [1/9] Create feature branch from main
 git push
-REM git checkout main || goto :fail
+git checkout main
 
-call :pull_main || goto :fail
-REM Powershell
-REM $REMOTE_NAME = "origin"
-REM git ls-remote --exit-code --heads $REMOTE_NAME main
-REM git rev-parse --abbrev-ref --symbolic-full-name '@{u}'
-REM git pull
+set REMOTE_NAME=origin
 
-git checkout -b %FEATURE_BRANCH% || goto :fail
-REM Powershell
-REM $FEATURE_BRANCH = "feature/PISAPI-1.2-2053"
-REM git checkout -b $FEATURE_BRANCH
+REM PULL
+
+git ls-remote --exit-code --heads %REMOTE_NAME% main
+git rev-parse --abbrev-ref --symbolic-full-name @{u}
+git pull 
 
 
-REM cmd /v:on /c "set TICKET=cycle&&set VERSION=1.1&&set STAGE_BRANCH=stage/!VERSION!&&set RELEASE_TAG=v!VERSION!&&set ARTIFACT=artifact\PISAPI-!VERSION!.zip&&set set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!"
+git checkout -b %FEATURE_BRANCH% 
 
 echo.
 echo Apply your schema/object changes in DEV now.
 pause
+
+REM   alter table pis_storitve_pos.tmp_test2054 add AGE NUMBER;
+REM   create table pis_storitve_pos.tmp_test2055 as select * from pis_storitve_pos.tmp_test2054;
+
 
 echo ==========================================================
 echo EXPORT
 echo ==========================================================
 
 echo [2/9] PROJECT export from DEV
-sql26 -name dev @src/scripts/during/next_cycle_project_export.sql || goto :fail
+sql26 -name dev @src/scripts/during/next_cycle_project_export.sql
 echo.
 
 
@@ -150,33 +134,16 @@ REM warning: in the working copy of 'src/database/pis_storitve_pos/tables/tmp_te
 REM 
 REM ********************* DROP TABLE ********************
 
-REM set VERSION=1.1
-REM SET TICKET=cycle  
-REM set "FEATURE_BRANCH=feature/PISAPI-%VERSION%-%TICKET%"
-REM set "STAGE_BRANCH=stage/%VERSION%"
-REM set "RELEASE_TAG=v%VERSION%"
-REM set "ARTIFACT=artifact\PISAPI-%VERSION%.zip"
-
-
-REM 3. Commit feature.
-
+git add -A
 
 echo [3/9] Commit feature changes and merge to main
 git add .
 git commit -m "Feature %TICKET%: export project changes"
-REM git checkout main || goto :fail
+git checkout main 
 
-REM Powershell
-REM $FEATURE_BRANCH = "feature/PISAPI-1.2-2053"
-REM git merge --no-ff $FEATURE_BRANCH -m "Merge $FEATURE_BRANCH to main"
-REM git merge --no-ff %FEATURE_BRANCH% -m "Merge %FEATURE_BRANCH% to main" || goto :fail
+git merge --no-ff %FEATURE_BRANCH% -m "Merge %FEATURE_BRANCH% to main"
 
-git checkout -b %STAGE_BRANCH% || goto :fail
-
-REM Powershell
-REM $STAGE_BRANCH = "stage/1.2"
-REM git checkout -b $STAGE_BRANCH
- 
+git checkout -b %STAGE_BRANCH% 
 
 echo ==========================================================
 echo STAGE
@@ -184,64 +151,14 @@ echo ==========================================================
 
 echo [4/9] PROJECT stage and commit release changelog
 
-sql26 -name dev @src/scripts/during/next_cycle_project_stage.sql || goto :fail
+sql26 -name dev @src/scripts/during/next_cycle_project_stage.sql
 
-git log --oneline --decorate --graph -n 10
-
-REM git add -A
+git add -A
 git add .
 git commit -m "Prepare release changelog %VERSION%"
 
-REM Powershell
-REM $VERSION = "1.2"
-REM git commit -m "Prepare release changelog $VERSION"
-
-
-REM cmd /c "set VERSION=1.2 && echo %VERSION%"
-REM 
-REM cmd /v:on /c "set VERSION=1.2&&set TICKET=cycle&&set FEATURE_BRANCH=feature/PISAPI-!VERSION!-!TICKET!&&echo !FEATURE_BRANCH!"
-REM 
-REM sql26 -name dev @src/scripts/during/next_cycle_project_stage.sql
-
-
-REM Powershell
-REM $TICKET= "cycle"
-REM sql26 -name dev @src/scripts/during/next_cycle_project_stage.sql
-REM git add -A
-REM git commit -m "PROJECT stage for 1.2"
-
-
-REM again remove stage branch
-REM move to main
-
-
 REM mkdir C:\Install\Db\PISAPILQ2050\dist\releases\next
-
-REM 53 je nova, dropajo se preko C:\Install\Db\PISAPILQ2050\dist\releases\next\release.changelog.xml
-REM C:\Install\Db\PISAPILQ2050\dist\releases\next\pis_storitve_pos\tables\drop_old_table.sql
-
-REM begin
-REM   execute immediate 'drop table pis_storitve_pos.test_2066';
-REM exception when others then
-REM   null;
-REM end;
-REM /
-REM 
-REM begin
-REM   execute immediate 'drop table pis_storitve_pos.tmp_test6';
-REM exception when others then
-REM   null;
-REM end;
-REM /
-REM 
-REM begin
-REM   execute immediate 'drop table pis_storitve_pos.tmp_test2052';
-REM exception when others then
-REM   null;
-REM end;
-REM /
-
-
+REM C:\Install\Db\PISAPILQ2050\dist\releases\next\release.changelog.xml
 
 REM REM xcopy C:\Install\Db\PISAPILQ2050\src\database\*.* C:\Install\Db\PISAPILQ2050\dist\releases\next\ /S /I /Y
 REM REM el C:\Install\Db\PISAPILQ2050\src\database\pis_storitve_pos\tmp_test2052.sql
@@ -250,13 +167,10 @@ REM sql26 -name dev @src/scripts/during/next_cycle_project_release.sql %VERSION%
 
 
 REM Immediately check:
-REM git status
-REM git diff --name-status
+git status
+git diff --name-status
 REM presence of dist/releases/next/ or new dist/releases/1.1/ content
 REM Only after staged files appear, 
-
-
-
 
 echo ==========================================================
 echo RELEASE, GEN ARTIFACT
@@ -264,41 +178,30 @@ echo ==========================================================
 
 echo [5/9] PROJECT release and artifact generation
 
-sql26 -name dev @src/scripts/during/next_cycle_project_release.sql %VERSION% || goto :fail
+
+sql26 -name dev @src/scripts/during/next_cycle_project_release.sql %VERSION%
 
 REM Powershell
 REM sql26 -name dev @src/scripts/during/next_cycle_project_release.sql $VERSION
 
 echo [6/9] Freeze release in git
-
-git restore .dbtools/project.config.json
-git add -A dist/releases
+git add .
 git commit -m "Release %VERSION%"
-git status
-git diff --name-status
 
 REM Powershell
 REM git add .
 REM git commit -m "Release $VERSION"
 
 
-REM git add dist/ artifact/
+git add dist/ artifact/
 git commit -m "Freeze release %VERSION% baseline"
 
 REM Powershell
 REM git commit -m "Freeze release $VERSION baseline"
 
-git checkout main
-
-git merge --no-ff %STAGE_BRANCH% -m "Merge %STAGE_BRANCH% to main"
-
-REM TAG and push
-git tag v%VERSION%
-git push -u origin main stage/%VERSION% --tags
 
 
-
-REM REM git tag %RELEASE_TAG%
+git tag %RELEASE_TAG%
 REM Powershell
 REM git tag $RELEASE_TAG
 
@@ -307,7 +210,7 @@ REM git tag $RELEASE_TAG
 echo [7/9] Optional incremental deploy to PROD (no reset)
 echo If PROD already has previous version, this deploy applies only new changesets.
 pause
-rem sql26 -name prod @src/scremripts/during/next_cycle_project_deploy.sql %VERSION% || goto :fail
+rem sql26 -name prod @src/scripts/during/next_cycle_project_deploy.sql %VERSION% || goto :fail
 rem sql26 -name prod @src/scripts/during/prod_validate.sql || goto :fail
 
 echo [8/9] Merge stage to main
@@ -416,7 +319,7 @@ git rev-parse --abbrev-ref --symbolic-full-name @{u} >nul 2>&1
 if errorlevel 1 (
 	echo main has no upstream tracking. Using %REMOTE_NAME%/main and setting upstream...
 	git pull %REMOTE_NAME% main || exit /b 1
-	git branch  set-upstream-to=%REMOTE_NAME%/main main >nul 2>&1
+	git branch --set-upstream-to=%REMOTE_NAME%/main main >nul 2>&1
 	exit /b 0
 )
 
@@ -428,6 +331,3 @@ echo.
 echo ERROR: command failed with exit code %ERRORLEVEL%.
 echo Stop point kept for investigation.
 exit /b %ERRORLEVEL%
-
-
-REM sql26 -name prod @src/scripts/during/next_cycle_project_deploy.sql %VERSION%
