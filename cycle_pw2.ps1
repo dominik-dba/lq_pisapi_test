@@ -110,74 +110,7 @@ function Pull-Main {
 try {
     Write-Host 'USAGE: cycle_pw.ps1 [-Version 1.5] [-Ticket cycle]'
 
-    Invoke-External -File git -Args @('checkout', 'main')
-    Invoke-External -File git -Args @('add', '.')
-    Invoke-External -File git -Args @('commit', '-m', 'NC')
-    Invoke-External -File git -Args @('push')
-
     Set-Location -Path $root
-
-    Preflight
-
-    Write-Host '=========================================================='
-    Write-Host "NEXT CYCLE RUNBOOK - VERSION $Version"
-    Write-Host "Feature branch: $featureBranch"
-    Write-Host "Stage branch:   $stageBranch"
-    Write-Host '=========================================================='
-    Write-Host
-
-    Write-Host '[1/9] Create feature branch from main'
-    Invoke-External -File git -Args @('push')
-
-    Pull-Main
-
-    Invoke-External -File git -Args @('checkout', '-b', $featureBranch)
-
-    Write-Host
-    Write-Host 'Apply your schema/object changes in DEV now.'
-    [void](Read-Host 'Press Enter to continue')
-
-    Write-Host '=========================================================='
-    Write-Host 'EXPORT'
-    Write-Host '=========================================================='
-
-    Write-Host '[2/9] PROJECT export from DEV'
-    Invoke-External -File C:\Ant\sqlcl2026\bin\sql.exe -Args @('-thin', '-name', 'dev', '@src/scripts/during/next_cycle_project_export.sql')
-    Write-Host
-
-    Write-Host '[3/9] Commit feature changes and merge to main'
-    Invoke-External -File git -Args @('add', '.')
-    Invoke-External -File git -Args @('commit', '-m', "Feature ${Ticket}: export project changes")
-
-    Invoke-External -File git -Args @('checkout', '-b', $stageBranch)
-
-    Write-Host '=========================================================='
-    Write-Host 'STAGE'
-    Write-Host '=========================================================='
-
-    Write-Host '[4/9] PROJECT stage and commit release changelog'
-    Invoke-External -File C:\Ant\sqlcl2026\bin\sql.exe -Args @('-thin', '-name', 'dev', '@src/scripts/during/next_cycle_project_stage.sql')
-
-    Invoke-External -File git -Args @('log', '--oneline', '--decorate', '--graph', '-n', '10')
-
-    Invoke-External -File git -Args @('add', '.')
-    Invoke-External -File git -Args @('commit', '-m', "Prepare release changelog $Version")
-
-    Write-Host '=========================================================='
-    Write-Host 'RELEASE, GEN ARTIFACT'
-    Write-Host '=========================================================='
-
-    Write-Host '[5/9] PROJECT release and artifact generation'
-    Invoke-External -File C:\Ant\sqlcl2026\bin\sql.exe -Args @('-thin', '-name', 'dev', '@src/scripts/during/next_cycle_project_release.sql', $Version)
-
-    Write-Host '[6/9] Freeze release in git'
-    Invoke-External -File git -Args @('restore', '.dbtools/project.config.json')
-    Invoke-External -File git -Args @('add', '-A', 'dist/releases')
-    Invoke-External -File git -Args @('commit', '-m', "Release $Version")
-    Invoke-External -File git -Args @('status')
-    Invoke-External -File git -Args @('diff', '--name-status')
-
-    Invoke-External -File git -Args @('commit', '-m', '"Freeze release $Version baseline"')
 
     Invoke-External -File git -Args @('checkout', 'main')
     Invoke-External -File git -Args @('merge', '--no-ff', $stageBranch, '-m', "Merge $stageBranch to main")
